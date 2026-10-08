@@ -381,7 +381,16 @@
     render();
   }
 
+  /* On wide screens the sources sit beside the videos, so show them open. */
+  function initSources() {
+    const wide = matchMedia("(min-width: 1200px)");
+    const apply = () => document.querySelectorAll(".chapter-foot details.sources").forEach((d) => { d.open = wide.matches; });
+    wide.addEventListener("change", apply);
+    apply();
+  }
+
   initHero();
+  initSources();
   initTimeline();
   initScale();
   initQuiz();
