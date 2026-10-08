@@ -75,7 +75,7 @@
     const readout = document.getElementById("pond-readout");
     if (!canvas || !range) return;
     const ctx = canvas.getContext("2d");
-    const S = canvas.width;
+    const S = window.VM.logicalSize(canvas).W;
     const creatures = makeCreatures();
     let lastMag = -1;
 
@@ -225,7 +225,7 @@
     const steps = document.querySelectorAll("#mitosis-steps li");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    const S = canvas.width;
+    const S = window.VM.logicalSize(canvas).W;
     let playing = !prefersReducedMotion();
     let progress = prefersReducedMotion() ? 0.6 : 0;
     let shownStep = -1;

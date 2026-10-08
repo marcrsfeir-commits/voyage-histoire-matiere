@@ -39,18 +39,73 @@
 
   /* Runs frame(now, dt) on every animation frame while the canvas is on screen.
      With reduced motion, frame only runs when redraw() is called (one still image). */
+  /* Each canvas keeps a fixed logical size (its width/height attributes) for drawing,
+     while its backing store follows the on-screen size × pixel density, so it stays sharp. */
+  const MAX_DPR = 2;
+  const logicalSizes = new WeakMap();
+
+  function logicalSize(canvas) {
+    if (!logicalSizes.has(canvas)) logicalSizes.set(canvas, { W: canvas.width, H: canvas.height });
+    return logicalSizes.get(canvas);
+  }
+
+  function fitBackingStore(canvas) {
+    const { W, H } = logicalSize(canvas);
+    const cssW = canvas.clientWidth;
+    if (!cssW) return false;
+    const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+    const bw = Math.round(cssW * dpr);
+    const bh = Math.round((cssW * dpr * H) / W);
+    if (canvas.width === bw && canvas.height === bh) return false;
+    canvas.width = bw;
+    canvas.height = bh;
+    return true;
+  }
+
+  function applyLogicalTransform(canvas) {
+    const { W } = logicalSize(canvas);
+    const k = canvas.width / W;
+    canvas.getContext("2d").setTransform(k, 0, 0, k, 0, 0);
+  }
+
+  /* Lets a simulation swap to another logical size (e.g. a taller layout on phones). */
+  function setLogicalSize(canvas, W, H) {
+    logicalSizes.set(canvas, { W, H });
+    fitBackingStore(canvas);
+    applyLogicalTransform(canvas);
+  }
+
+  /* How much to enlarge text and strokes so they stay readable when the canvas is shown small. */
+  const MIN_READABLE = 0.62; // logical → CSS ratio below which labels get enlarged
+  function uiScale(canvas) {
+    const { W } = logicalSize(canvas);
+    const cssW = canvas.clientWidth || W;
+    return clamp((MIN_READABLE * W) / cssW, 1, 2.6);
+  }
+
   function animate(canvas, frame) {
     let isVisible = false;
     let rafId = 0;
     let last = 0;
+    logicalSize(canvas);
+
+    function render(now, dt) {
+      applyLogicalTransform(canvas);
+      frame(now, dt);
+    }
 
     function tick(now) {
       const dt = last ? Math.min(50, now - last) : 16;
       last = now;
-      frame(now, dt);
+      render(now, dt);
       if (isVisible && !prefersReducedMotion()) rafId = requestAnimationFrame(tick);
       else last = 0;
     }
+
+    new ResizeObserver(() => {
+      if (fitBackingStore(canvas)) render(performance.now(), 0);
+    }).observe(canvas);
+    fitBackingStore(canvas);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -62,12 +117,12 @@
       { rootMargin: "120px" }
     );
     observer.observe(canvas);
-    themeListeners.push(() => frame(performance.now(), 0));
+    themeListeners.push(() => render(performance.now(), 0));
 
-    frame(performance.now(), 0); // complete first frame at rest
+    render(performance.now(), 0); // complete first frame at rest
     return {
       redraw() {
-        if (!isVisible || prefersReducedMotion()) frame(performance.now(), 0);
+        if (!isVisible || prefersReducedMotion()) render(performance.now(), 0);
       },
     };
   }
@@ -97,5 +152,5 @@
   }
   themeListeners.push(() => rgbaCache.clear());
 
-  window.VM = { tokens, prefersReducedMotion, seeded, animate, clamp, lerp, smooth, withAlpha, rgba };
+  window.VM = { tokens, prefersReducedMotion, seeded, animate, logicalSize, setLogicalSize, uiScale, clamp, lerp, smooth, withAlpha, rgba };
 })();

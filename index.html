@@ -24,7 +24,7 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Retour en haut"><i class="brand-mark" aria-hidden="true"></i><span>Voyage dans la matière</span></a>
     <nav class="topnav" aria-label="Navigation principale">
-      <a href="#frise">Le fil du temps</a>
+      <a href="#frise"><span class="long">Le fil du temps</span><span class="short">Frise</span></a>
       <a href="#echelles">Échelles</a>
       <a href="#chapitres">Chapitres</a>
       <a href="#quiz">Quiz</a>
@@ -64,12 +64,11 @@
     <div class="wrap">
       <div class="section-head">
         <h2 id="frise-title">Le fil du temps</h2>
-        <p>Les dates sont placées à l'échelle entre 1580 et 2030. Le Big Bang, il y a 13,8 milliards d'années, ne tiendrait pas sur l'écran : l'axe est coupé. Touchez un événement souligné pour ouvrir son chapitre.</p>
+        <p>Sur ordinateur, les dates sont placées à l'échelle entre 1580 et 2025 ; sur téléphone, elles défilent dans l'ordre, espacées selon le temps écoulé. Le Big Bang, il y a 13,8 milliards d'années, ne tiendrait sur aucun écran : l'axe est coupé. Touchez un événement souligné pour ouvrir son chapitre.</p>
       </div>
       <div class="timeline-scroll" tabindex="0" aria-label="Frise chronologique, défilement horizontal">
         <div class="timeline" id="timeline"></div>
       </div>
-      <p class="timeline-hint">← Faites défiler la frise →</p>
     </div>
   </section>
 
@@ -156,7 +155,7 @@
 
       <figure class="diagram">
         <div class="diagram-scroll">
-          <svg viewBox="0 0 860 250" role="img" aria-labelledby="dg1-t">
+          <svg class="dg-h" viewBox="0 0 860 250" role="img" aria-labelledby="dg1-t">
             <title id="dg1-t">Schéma du trajet de la lumière dans un microscope optique</title>
             <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker></defs>
             <line x1="40" y1="120" x2="830" y2="120" stroke="var(--rule)" stroke-dasharray="4 5"/>
@@ -176,6 +175,29 @@
             <text x="640" y="190" text-anchor="middle">Oculaire</text><text x="640" y="206" text-anchor="middle" class="sub">×10, agrandit encore</text>
             <text x="783" y="182" text-anchor="middle">Œil</text>
             <text x="430" y="240" text-anchor="middle" class="sub">Grossissement total = objectif × oculaire (par exemple 40 × 10 = 400)</text>
+          </svg>
+          <svg class="dg-v" viewBox="0 0 360 600" role="img" aria-labelledby="dg1v-t">
+            <title id="dg1v-t">Schéma vertical du trajet de la lumière dans un microscope optique</title>
+            <defs><marker id="arrv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker></defs>
+            <line x1="100" y1="30" x2="100" y2="540" stroke="var(--rule)" stroke-dasharray="4 5"/>
+            <path d="M100 52 L78 130 L78 205 L122 280 L140 365 L100 450 L100 515" fill="none" stroke="var(--brass)" stroke-width="2" marker-end="url(#arrv)"/>
+            <path d="M100 52 L122 130 L122 205 L78 280 L60 365 L100 450 L100 515" fill="none" stroke="var(--brass)" stroke-width="2" opacity=".55"/>
+            <circle cx="100" cy="44" r="16" fill="var(--brass)" opacity=".25"/><circle cx="100" cy="44" r="8" fill="var(--brass)"/>
+            <ellipse cx="100" cy="130" rx="36" ry="9" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <rect x="60" y="201" width="80" height="8" fill="var(--pink)" opacity=".75"/>
+            <ellipse cx="100" cy="280" rx="28" ry="10" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <line x1="50" y1="365" x2="150" y2="365" stroke="var(--muted)" stroke-dasharray="3 3"/>
+            <ellipse cx="100" cy="450" rx="44" ry="10" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <path d="M78 528 q22 26 44 0" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="100" cy="536" r="5" fill="var(--ink)"/>
+            <text x="170" y="42">Lumière</text><text x="170" y="58" class="sub">lampe ou miroir</text>
+            <text x="170" y="128">Condenseur</text><text x="170" y="144" class="sub">concentre la lumière</text>
+            <text x="170" y="203">Échantillon</text><text x="170" y="219" class="sub">lame + lamelle</text>
+            <text x="170" y="278">Objectif</text><text x="170" y="294" class="sub">×4, ×10, ×40</text>
+            <text x="170" y="363">Image intermédiaire</text><text x="170" y="379" class="sub">déjà agrandie</text>
+            <text x="170" y="448">Oculaire</text><text x="170" y="464" class="sub">×10, agrandit encore</text>
+            <text x="170" y="540">Œil</text>
+            <text x="20" y="578" class="sub">Grossissement total = objectif × oculaire</text>
+            <text x="20" y="594" class="sub">(par exemple 40 × 10 = 400)</text>
           </svg>
         </div>
         <figcaption><b>Schéma · Le microscope composé.</b> La lumière traverse l'échantillon, puis deux lentilles agrandissent l'image l'une après l'autre. Le microscope de Leeuwenhoek n'avait qu'une seule lentille, mais de bien meilleure qualité.</figcaption>
@@ -310,7 +332,7 @@
         </div>
       </div>
 
-      <div class="bench">
+      <div class="bench wide">
         <div class="bench-view wide"><canvas id="sim-decay" width="1200" height="760" aria-label="Simulation : désintégration de 100 noyaux radioactifs et courbe de décroissance"></canvas></div>
         <div class="bench-text">
           <p class="eyebrow">Simulation · 100 noyaux de radium</p>
@@ -378,7 +400,7 @@
         </div>
       </div>
 
-      <div class="bench reverse">
+      <div class="bench wide">
         <div class="bench-view wide"><canvas id="sim-rutherford" width="1200" height="720" aria-label="Simulation de l'expérience de Rutherford : des particules alpha traversent une feuille d'or"></canvas></div>
         <div class="bench-text">
           <p class="eyebrow">Simulation · Particules α contre feuille d'or</p>
@@ -510,43 +532,45 @@
       </div>
 
       <figure class="diagram">
-        <div class="diagram-scroll">
-          <svg viewBox="0 0 860 330" role="img" aria-labelledby="dg2-t">
-            <title id="dg2-t">Comparaison entre un microscope optique et un microscope électronique</title>
-            <text x="200" y="26" text-anchor="middle" class="lbl-title">Microscope optique</text>
-            <text x="640" y="26" text-anchor="middle" class="lbl-title">Microscope électronique</text>
-            <line x1="430" y1="12" x2="430" y2="320" stroke="var(--rule)"/>
-            <!-- optique -->
-            <circle cx="200" cy="300" r="12" fill="var(--brass)"/><path d="M200 288 L200 60" stroke="var(--brass)" stroke-width="10" opacity=".22"/>
-            <ellipse cx="200" cy="250" rx="46" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
-            <rect x="160" y="208" width="80" height="6" fill="var(--pink)" opacity=".8"/>
-            <ellipse cx="200" cy="160" rx="34" ry="7" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
-            <ellipse cx="200" cy="80" rx="40" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
-            <path d="M184 44 q16 -14 32 0" fill="none" stroke="var(--ink)" stroke-width="2"/>
-            <text x="250" y="304">Lampe (lumière visible)</text>
-            <text x="258" y="254">Condenseur en verre</text>
-            <text x="250" y="214">Échantillon (peut être vivant)</text>
-            <text x="244" y="164">Objectif en verre</text>
-            <text x="250" y="84">Oculaire + œil</text>
-            <text x="30" y="214" class="sub">air libre</text>
-            <!-- electronique -->
-            <rect x="610" y="44" width="60" height="22" rx="4" fill="var(--ink)"/><path d="M640 66 L640 280" stroke="var(--blue)" stroke-width="3" stroke-dasharray="2 5"/>
-            <g fill="none" stroke="var(--brass)" stroke-width="5"><rect x="606" y="96" width="68" height="20" rx="6"/><rect x="606" y="176" width="68" height="20" rx="6"/><rect x="606" y="226" width="68" height="20" rx="6"/></g>
-            <rect x="600" y="148" width="80" height="5" fill="var(--pink)" opacity=".8"/>
-            <rect x="590" y="282" width="100" height="10" fill="var(--blue)" opacity=".55"/>
-            <rect x="572" y="36" width="136" height="266" rx="10" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/>
-            <text x="720" y="60">Canon à électrons</text>
-            <text x="720" y="110">Bobine magnétique</text>
-            <text x="720" y="153">Échantillon (mort, sous vide)</text>
-            <text x="720" y="200">Bobines = « lentilles »</text>
-            <text x="720" y="292">Écran ou caméra</text>
-            <text x="476" y="320" class="sub">Tout est enfermé dans le vide</text>
+        <div class="diagram-pair">
+          <svg viewBox="0 0 430 330" role="img" aria-labelledby="dg2a-t">
+            <title id="dg2a-t">Schéma d'un microscope optique</title>
+            <text x="215" y="26" text-anchor="middle" class="lbl-title">Microscope optique</text>
+            <path d="M110 288 L110 60" stroke="var(--brass)" stroke-width="10" opacity=".22"/>
+            <circle cx="110" cy="300" r="12" fill="var(--brass)"/>
+            <ellipse cx="110" cy="250" rx="46" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <rect x="70" y="208" width="80" height="6" fill="var(--pink)" opacity=".8"/>
+            <ellipse cx="110" cy="160" rx="34" ry="7" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <ellipse cx="110" cy="80" rx="40" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <path d="M94 50 q16 -14 32 0" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <text x="170" y="304">Lampe (lumière visible)</text>
+            <text x="170" y="254">Condenseur en verre</text>
+            <text x="170" y="208">Échantillon</text><text x="170" y="224" class="sub">peut être vivant</text>
+            <text x="170" y="164">Objectif en verre</text>
+            <text x="170" y="84">Oculaire + œil</text>
+            <text x="20" y="324" class="sub">à l'air libre</text>
+          </svg>
+          <svg viewBox="0 0 430 330" role="img" aria-labelledby="dg2b-t">
+            <title id="dg2b-t">Schéma d'un microscope électronique</title>
+            <text x="215" y="26" text-anchor="middle" class="lbl-title">Microscope électronique</text>
+            <rect x="40" y="40" width="140" height="266" rx="10" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/>
+            <rect x="80" y="48" width="60" height="22" rx="4" fill="var(--ink)"/>
+            <path d="M110 70 L110 280" stroke="var(--blue)" stroke-width="3" stroke-dasharray="2 5"/>
+            <g fill="none" stroke="var(--brass)" stroke-width="5"><rect x="76" y="100" width="68" height="20" rx="6"/><rect x="76" y="180" width="68" height="20" rx="6"/><rect x="76" y="230" width="68" height="20" rx="6"/></g>
+            <rect x="70" y="150" width="80" height="5" fill="var(--pink)" opacity=".8"/>
+            <rect x="60" y="282" width="100" height="10" fill="var(--blue)" opacity=".55"/>
+            <text x="200" y="64">Canon à électrons</text>
+            <text x="200" y="114">Bobine magnétique</text>
+            <text x="200" y="152">Échantillon</text><text x="200" y="168" class="sub">mort, placé sous vide</text>
+            <text x="200" y="214">Bobines = « lentilles »</text>
+            <text x="200" y="292">Écran ou caméra</text>
+            <text x="40" y="324" class="sub">Tout est enfermé dans le vide</text>
           </svg>
         </div>
         <figcaption><b>Schéma · Optique contre électronique.</b> Le principe est le même (une source, un échantillon, des lentilles qui agrandissent), mais les électrons permettent de voir environ 1 000 fois plus petit.</figcaption>
       </figure>
 
-      <div class="bench">
+      <div class="bench wide">
         <div class="bench-view wide"><canvas id="sim-stm" width="1200" height="700" aria-label="Animation : la pointe d'un microscope à effet tunnel suit le relief des atomes"></canvas></div>
         <div class="bench-text">
           <p class="eyebrow">Animation · Microscope à effet tunnel</p>
@@ -606,7 +630,7 @@
         </div>
       </div>
 
-      <div class="bench reverse">
+      <div class="bench wide">
         <div class="bench-view wide"><canvas id="sim-gravity" width="1200" height="700" aria-label="Animation : cristaux qui se forment sur Terre et dans l'ISS"></canvas></div>
         <div class="bench-text">
           <p class="eyebrow">Animation · Cristallisation comparée</p>

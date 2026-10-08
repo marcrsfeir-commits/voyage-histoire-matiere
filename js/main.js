@@ -18,7 +18,7 @@
     const caption = document.getElementById("hero-caption");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    const S = canvas.width;
+    const S = window.VM.logicalSize(canvas).W;
     const start = performance.now();
     let shownCaption = -1;
 
@@ -72,15 +72,14 @@
     { year: 2017, kind: "sci", what: "Cristaux d'un anticancéreux dans l'ISS", who: "Thomas Pesquet", href: "#espace" },
     { year: 2023, kind: "tech", what: "Bio-impression 3D dans l'ISS", who: "Sultan Al Neyadi", href: "#espace" },
   ];
-  const TL = { firstYear: 1580, x0: 190, pxPerYear: 3.09, labelGap: 124, laneStep: 96 };
-  const SLOTS = [["up", 0], ["down", 0], ["up", 1], ["down", 1]];
+  const TL = { firstYear: 1580, lastYear: 2025, originW: 150, x0: 186, labelW: 126 };
+  const ORIGIN = { label: "−13,8 milliards d'années", kind: "origin", what: "Big Bang", who: "naissance de l'Univers et de la matière", href: "#big-bang" };
+  const VERTICAL_QUERY = matchMedia("(max-width: 979px)");
 
-  function eventNode({ label, year, kind, what, who, href }, side, lane, x) {
+  function eventNode({ label, year, kind, what, who, href }) {
     const el = document.createElement(href ? "a" : "div");
     if (href) el.href = href;
-    el.className = `event ${kind} ${side}`;
-    el.style.left = `${x}px`;
-    el.style[side === "up" ? "paddingBottom" : "paddingTop"] = `${(side === "up" ? 8 : 22) + lane * TL.laneStep}px`;
+    el.className = `event ${kind}`;
     const dot = document.createElement("i");
     dot.className = "dot";
     const yr = document.createElement("span");
@@ -96,39 +95,107 @@
     return el;
   }
 
+  /* Wide screens: proportional horizontal axis that fits the width, labels stacked in rows.
+     Rows are sized from the labels' measured heights, so long labels never collide. */
+  const ROW_GAP = 10;
+  const LEG_UP = 8;
+  const LEG_DOWN = 22;
+
+  function assignLanes(xOf) {
+    const lastX = { up: [], down: [] };
+    return EVENTS.map((ev) => {
+      const x = xOf(ev.year);
+      let side = null, lane = -1;
+      for (let i = 0; i < 16 && lane === -1; i++) {
+        const s = i % 2 ? "down" : "up", l = Math.floor(i / 2);
+        if ((lastX[s][l] ?? -Infinity) <= x - TL.labelW - 4) { side = s; lane = l; }
+      }
+      if (lane === -1) { side = "up"; lane = lastX.up.indexOf(Math.min(...lastX.up)); }
+      lastX[side][lane] = x;
+      return { node: eventNode(ev), x, side, lane };
+    });
+  }
+
+  /* Offset of each row from the axis = sum of the tallest label in each row below it. */
+  function rowOffsets(items, side, base) {
+    const tallest = [];
+    items.filter((it) => it.side === side).forEach((it) => { tallest[it.lane] = Math.max(tallest[it.lane] || 0, it.h); });
+    const offsets = [base];
+    for (let l = 1; l < tallest.length; l++) offsets[l] = offsets[l - 1] + (tallest[l - 1] || 0) + ROW_GAP;
+    const total = tallest.length ? offsets[tallest.length - 1] + tallest[tallest.length - 1] : base;
+    return { offsets, total };
+  }
+
+  function layoutHorizontal(host, width) {
+    const usable = width - TL.x0 - TL.labelW;
+    const xOf = (year) => TL.x0 + ((year - TL.firstYear) / (TL.lastYear - TL.firstYear)) * usable;
+    const items = [{ node: eventNode(ORIGIN), x: 10, side: "down", lane: 0 }, ...assignLanes(xOf)];
+
+    host.style.height = "0px";
+    items.forEach((it) => { it.node.classList.add(it.side); it.node.style.left = `${it.x}px`; it.node.style.visibility = "hidden"; host.append(it.node); });
+    items.forEach((it) => { it.h = it.node.offsetHeight; });
+
+    const up = rowOffsets(items, "up", LEG_UP);
+    const down = rowOffsets(items, "down", LEG_DOWN);
+    const axisY = up.total + 8;
+    host.style.height = `${axisY + down.total + 12}px`;
+    items.forEach((it) => {
+      const offset = (it.side === "up" ? up : down).offsets[it.lane];
+      if (it.side === "up") { it.node.style.top = `${axisY - 3 - offset - it.h}px`; it.node.style.paddingBottom = `${offset}px`; }
+      else { it.node.style.top = `${axisY + 3}px`; it.node.style.paddingTop = `${offset}px`; }
+      it.node.style.zIndex = String(20 - it.lane); // inner rows cover the lines of outer rows
+      it.node.style.visibility = "";
+    });
+
+    const axis = Object.assign(document.createElement("div"), { className: "axis" });
+    axis.style.top = `${axisY}px`;
+    const brk = Object.assign(document.createElement("div"), { className: "break" });
+    brk.style.cssText = `left:${TL.originW - 6}px;top:${axisY - 12}px`;
+    host.prepend(axis, brk);
+    for (let y = 1600; y <= 2000; y += 50) {
+      const tick = Object.assign(document.createElement("span"), { className: "tick", textContent: y });
+      tick.style.cssText = `left:${xOf(y)}px;top:${axisY + 7}px`;
+      host.append(tick);
+    }
+  }
+
+  /* Phones and tablets: vertical timeline, gaps proportional to the time elapsed. */
+  const V_PX_PER_YEAR = 0.55;
+  const V_GAP = [10, 64];
+
+  function layoutVertical(host) {
+    host.style.height = "";
+    const axis = Object.assign(document.createElement("div"), { className: "axis" });
+    host.append(axis, eventNode(ORIGIN));
+    const brk = document.createElement("p");
+    brk.className = "v-break";
+    brk.textContent = "… 13,8 milliards d'années plus tard …";
+    host.append(brk);
+    EVENTS.forEach((ev, i) => {
+      const node = eventNode(ev);
+      if (i > 0) node.style.marginTop = `${clamp((ev.year - EVENTS[i - 1].year) * V_PX_PER_YEAR, ...V_GAP)}px`;
+      host.append(node);
+    });
+  }
+
   function initTimeline() {
     const host = document.getElementById("timeline");
     if (!host) return;
-    const frag = document.createDocumentFragment();
-    const axis = document.createElement("div");
-    axis.className = "axis";
-    const brk = document.createElement("div");
-    brk.className = "break";
-    brk.style.left = "140px";
-    frag.append(axis, brk);
-
-    for (let y = 1600; y <= 2000; y += 50) {
-      const tick = document.createElement("span");
-      tick.className = "tick";
-      tick.style.left = `${TL.x0 + (y - TL.firstYear) * TL.pxPerYear}px`;
-      tick.textContent = y;
-      frag.append(tick);
+    let lastKey = "";
+    function render() {
+      const vertical = VERTICAL_QUERY.matches;
+      const width = host.parentElement.clientWidth;
+      const key = vertical ? "v" : `h${width}`;
+      if (key === lastKey) return;
+      lastKey = key;
+      host.textContent = "";
+      host.classList.toggle("vertical", vertical);
+      if (vertical) layoutVertical(host);
+      else layoutHorizontal(host, width);
     }
-
-    frag.append(
-      eventNode({ label: "−13,8 milliards d'années", kind: "origin", what: "Big Bang", who: "naissance de l'Univers et de la matière", href: "#big-bang" }, "down", 0, 24)
-    );
-
-    const lastX = SLOTS.map(() => -Infinity);
-    EVENTS.forEach((ev) => {
-      const x = TL.x0 + (ev.year - TL.firstYear) * TL.pxPerYear;
-      let slot = lastX.findIndex((lx) => x - lx >= TL.labelGap);
-      if (slot === -1) slot = lastX.indexOf(Math.min(...lastX));
-      lastX[slot] = x;
-      const [side, lane] = SLOTS[slot];
-      frag.append(eventNode(ev, side, lane, x));
-    });
-    host.append(frag);
+    let pending = 0;
+    new ResizeObserver(() => { cancelAnimationFrame(pending); pending = requestAnimationFrame(render); }).observe(host.parentElement);
+    render();
   }
 
   /* ---------- Scale explorer ---------- */
@@ -173,7 +240,7 @@
     if (!canvas || !range) return;
     range.max = (SLIDER_TOP_LOG - SLIDER_BOTTOM_LOG).toFixed(2);
     const ctx = canvas.getContext("2d");
-    const S = canvas.width;
+    const S = window.VM.logicalSize(canvas).W;
     const nameEl = document.getElementById("scale-obj");
     const sizeEl = document.getElementById("scale-size");
     const noteEl = document.getElementById("scale-note");
