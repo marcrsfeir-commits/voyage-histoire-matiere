@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voyage dans l'histoire de la matière</title>
+<meta name="description" content="Site interactif qui accompagne la frise chronologique : expériences, animations, vidéos et sources sur l'histoire de la matière, de la cellule à l'atome et au Big Bang.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Young+Serif&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fafbf9' stroke='%23142029' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23b8326a'/%3E%3C/svg%3E">
+<meta property="og:title" content="Voyage dans l'histoire de la matière">
+<meta property="og:description" content="Sept découvertes, de Hooke au Big Bang et à l'ISS : expériences, animations, vidéos et quiz.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#eef1ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1216" media="(prefers-color-scheme: dark)">
+</head>
+<body>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Retour en haut"><i class="brand-mark" aria-hidden="true"></i><span>Voyage dans la matière</span></a>
+    <nav class="topnav" aria-label="Navigation principale">
+      <a href="#frise">Le fil du temps</a>
+      <a href="#echelles">Échelles</a>
+      <a href="#chapitres">Chapitres</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow reveal">Vous avez scanné la frise · bienvenue</p>
+        <h1 id="hero-title" class="reveal d1">Voyage dans l'histoire de la <em>matière</em></h1>
+        <p class="lead reveal d2">De la première fraction de seconde de l'Univers jusqu'aux atomes que l'on déplace un par un : sept grandes découvertes à explorer de plus près, avec des expériences, des animations et des vidéos.</p>
+        <div class="disciplines reveal d3" aria-label="Disciplines du projet">
+          <span class="tag">SVT</span><span class="tag">Physique-Chimie</span><span class="tag">NSI</span><span class="tag">Arts</span>
+        </div>
+      </div>
+      <figure class="eyepiece" aria-label="Animation : le champ d'un microscope qui passe de l'Univers à la cellule puis à l'atome">
+        <canvas id="hero-lens" width="880" height="880"></canvas>
+        <figcaption id="hero-caption">·</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="legend" aria-label="Comment lire ce site">
+    <div class="wrap">
+      <div class="legend-item"><i class="swatch tech" aria-hidden="true"></i><p><strong>Innovation technique</strong>Un nouvel instrument ou une nouvelle méthode : microscope, bio-imprimante…</p></div>
+      <div class="legend-item"><i class="swatch sci" aria-hidden="true"></i><p><strong>Découverte scientifique</strong>Une idée nouvelle sur la nature : la cellule, le noyau de l'atome, l'expansion de l'Univers…</p></div>
+      <div class="legend-item"><i class="swatch qr" aria-hidden="true"></i><p><strong>Même code couleur que la frise</strong>La frise donne les dates. Ici, on va plus loin : on refait les expériences et on comprend comment on a su.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ TIMELINE ============ -->
+  <section class="section" id="frise" aria-labelledby="frise-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="frise-title">Le fil du temps</h2>
+        <p>Les dates sont placées à l'échelle entre 1580 et 2030. Le Big Bang, il y a 13,8 milliards d'années, ne tiendrait pas sur l'écran : l'axe est coupé. Touchez un événement souligné pour ouvrir son chapitre.</p>
+      </div>
+      <div class="timeline-scroll" tabindex="0" aria-label="Frise chronologique, défilement horizontal">
+        <div class="timeline" id="timeline"></div>
+      </div>
+      <p class="timeline-hint">← Faites défiler la frise →</p>
+    </div>
+  </section>
+
+  <!-- ============ SCALE EXPLORER ============ -->
+  <section class="section" id="echelles" aria-labelledby="echelles-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="echelles-title">Changer d'échelle</h2>
+        <p>Toute l'histoire de la matière est une histoire d'instruments : on ne découvre que ce que l'on peut voir. Faites glisser le curseur, du centimètre jusqu'à l'atome, et regardez quels instruments suivent.</p>
+      </div>
+      <div class="scale">
+        <div class="lens"><canvas id="scale-lens" width="840" height="840" aria-label="Champ de vision de l'objet choisi"></canvas></div>
+        <div class="scale-panel">
+          <div class="scale-readout" aria-live="polite"><span class="obj" id="scale-obj">Fourmi</span><span class="size" id="scale-size">5 mm</span></div>
+          <p class="scale-note" id="scale-note"></p>
+          <div class="slider-row">
+            <label for="scale-range"><span>Fourmi</span><span>Zoom (échelle logarithmique)</span><span>Atome</span></label>
+            <input type="range" id="scale-range" min="0" max="7" step="0.01" value="0">
+          </div>
+          <ul class="instruments" id="instruments" aria-label="Instruments capables de voir cet objet"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="chapitres"></div>
+
+  <!-- ============ CH 1 : HOOKE & LEEUWENHOEK ============ -->
+  <article class="chapter sci" id="hooke" aria-labelledby="ch1-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 1</span><span>·</span><span>SVT</span><span class="kind">Découverte scientifique</span></p>
+        <p class="chapter-year">1665</p>
+        <div class="chapter-title">
+          <h2 id="ch1-title">Les premiers regards dans l'invisible</h2>
+          <p class="who">Robert Hooke (1635-1703) · Antoni van Leeuwenhoek (1632-1723)</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">L'essentiel</span></h3>
+            <p>Vers 1590, des lunetiers hollandais (on cite souvent Hans et Zacharias Janssen) ont l'idée d'aligner deux lentilles dans un tube : c'est le <b>microscope composé</b>. Soixante-quinze ans plus tard, l'Anglais Robert Hooke améliore cet instrument et publie <i>Micrographia</i>, un livre rempli de dessins de puces, de moisissures et d'objets minuscules.</p>
+            <p>En observant une fine tranche de liège, il voit des milliers de petites cases vides qui lui rappellent les chambres des moines. Il les appelle <b>« cells »</b>, cellules. En réalité, il ne voyait que les parois de cellules mortes.</p>
+          </section>
+          <p class="keyfact">Le mot « cellule » vient du latin <i>cella</i>, « petite chambre ».<small>Hooke a donné un nom à la cellule, mais sans comprendre son rôle dans le vivant.</small></p>
+          <section>
+            <h3><span class="mono">Et Leeuwenhoek ?</span></h3>
+            <p>À Delft, le drapier Antoni van Leeuwenhoek fabrique ses propres microscopes avec <b>une seule minuscule lentille</b>, polie avec une précision incroyable. Ils grossissent jusqu'à environ <b>270 fois</b>, bien mieux que ceux de Hooke.</p>
+            <p>À partir de 1674, il observe dans l'eau d'un lac, dans de l'eau poivrée ou dans le tartre de ses dents des êtres vivants invisibles à l'œil nu : il les appelle des <b>« animalcules »</b>. Ce sont des micro-organismes, dont des bactéries. Il observe aussi les globules rouges et les spermatozoïdes.</p>
+          </section>
+          <div class="experiment">
+            <h3><span class="mono">Expérience</span> Refaire l'observation de Hooke</h3>
+            <ol>
+              <li>Découper une lamelle très fine de bouchon de liège (ou prendre un épiderme d'oignon).</li>
+              <li>La déposer sur une lame avec une goutte d'eau, recouvrir d'une lamelle.</li>
+              <li>Observer au microscope au grossissement ×40, puis ×100 et ×400.</li>
+              <li>Dessiner ce que l'on voit et ajouter une échelle.</li>
+            </ol>
+            <p style="margin-top:.7rem">On retrouve le « nid d'abeille » dessiné par Hooke en 1665 : chaque case est une cellule.</p>
+          </div>
+        </div>
+        <div class="figures">
+          <figure class="doc"><img src="img/hooke-microscope.jpg" width="649" height="720" alt="Gravure du microscope de Robert Hooke avec sa lampe à huile et sa boule d'eau qui concentre la lumière" loading="lazy"><figcaption><b>Le microscope de Hooke.</b> À gauche, une lampe et une boule remplie d'eau concentrent la lumière sur l'échantillon. <i>Micrographia</i>, 1665.</figcaption></figure>
+          <figure class="doc"><img src="img/hooke-cork.jpg" width="499" height="720" alt="Gravure de Hooke montrant des coupes de liège formées de petites cases" loading="lazy"><figcaption><b>Le liège vu par Hooke.</b> Les petites cases (fig. 1) sont les premières « cellules » jamais décrites.</figcaption></figure>
+          <figure class="portrait"><img src="img/leeuwenhoek.jpg" width="607" height="720" alt="Portrait peint d'Antoni van Leeuwenhoek tenant un de ses microscopes" loading="lazy"><figcaption><b>Antoni van Leeuwenhoek</b>, peint par Jan Verkolje vers 1680.</figcaption></figure>
+          <figure class="portrait"><img src="img/leeuwenhoek-microscope.jpg" width="432" height="720" alt="Réplique d'un microscope de Leeuwenhoek : une plaque de laiton avec une vis pour placer l'échantillon devant la lentille" loading="lazy"><figcaption><b>Réplique d'un microscope de Leeuwenhoek.</b> Il tient dans la main : la lentille est dans le petit trou de la plaque.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench">
+        <div class="bench-view"><canvas id="sim-pond" class="round" width="760" height="760" aria-label="Animation : une goutte d'eau de mare vue à différents grossissements"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Animation · Une goutte d'eau de mare</p>
+          <h3>Que voyait Leeuwenhoek ?</h3>
+          <p>À l'œil nu, une goutte d'eau paraît vide : notre œil ne distingue pas les détails plus petits qu'environ 0,1 mm. Augmentez le grossissement pour faire apparaître les animalcules.</p>
+          <div class="slider-row">
+            <label for="pond-zoom"><span>×1</span><span>Grossissement</span><span>×270</span></label>
+            <input type="range" id="pond-zoom" min="0" max="1" step="0.001" value="0">
+          </div>
+          <p class="readout" id="pond-readout" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <figure class="diagram">
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 860 250" role="img" aria-labelledby="dg1-t">
+            <title id="dg1-t">Schéma du trajet de la lumière dans un microscope optique</title>
+            <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--brass)"/></marker></defs>
+            <line x1="40" y1="120" x2="830" y2="120" stroke="var(--rule)" stroke-dasharray="4 5"/>
+            <g class="ray"><path d="M70 120 L180 98 L300 98 L380 142 L520 160 L640 120 L760 120" fill="none" stroke="var(--brass)" stroke-width="2" marker-end="url(#arr)"/><path d="M70 120 L180 142 L300 142 L380 98 L520 80 L640 120 L760 120" fill="none" stroke="var(--brass)" stroke-width="2" opacity=".55"/></g>
+            <circle cx="58" cy="120" r="16" fill="var(--brass)" opacity=".25"/><circle cx="58" cy="120" r="8" fill="var(--brass)"/>
+            <ellipse cx="180" cy="120" rx="9" ry="36" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <rect x="296" y="80" width="8" height="80" fill="var(--pink)" opacity=".75"/>
+            <ellipse cx="380" cy="120" rx="10" ry="28" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <line x1="520" y1="70" x2="520" y2="170" stroke="var(--muted)" stroke-dasharray="3 3"/>
+            <ellipse cx="640" cy="120" rx="10" ry="44" fill="var(--blue)" opacity=".35" stroke="var(--blue)"/>
+            <path d="M770 98 q34 22 0 44" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="783" cy="120" r="5" fill="var(--ink)"/>
+            <text x="58" y="182" text-anchor="middle">Lumière</text><text x="58" y="198" text-anchor="middle" class="sub">lampe ou miroir</text>
+            <text x="180" y="182" text-anchor="middle">Condenseur</text><text x="180" y="198" text-anchor="middle" class="sub">concentre la lumière</text>
+            <text x="300" y="60" text-anchor="middle">Échantillon</text><text x="300" y="44" text-anchor="middle" class="sub">lame + lamelle</text>
+            <text x="380" y="182" text-anchor="middle">Objectif</text><text x="380" y="198" text-anchor="middle" class="sub">×4, ×10, ×40</text>
+            <text x="520" y="196" text-anchor="middle">Image intermédiaire</text><text x="520" y="212" text-anchor="middle" class="sub">déjà agrandie</text>
+            <text x="640" y="190" text-anchor="middle">Oculaire</text><text x="640" y="206" text-anchor="middle" class="sub">×10, agrandit encore</text>
+            <text x="783" y="182" text-anchor="middle">Œil</text>
+            <text x="430" y="240" text-anchor="middle" class="sub">Grossissement total = objectif × oculaire (par exemple 40 × 10 = 400)</text>
+          </svg>
+        </div>
+        <figcaption><b>Schéma · Le microscope composé.</b> La lumière traverse l'échantillon, puis deux lentilles agrandissent l'image l'une après l'autre. Le microscope de Leeuwenhoek n'avait qu'une seule lentille, mais de bien meilleure qualité.</figcaption>
+      </figure>
+
+      <div class="videos">
+        <h3>Vidéos pour aller plus loin</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=TZ8aA2Yrsn4" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-TZ8aA2Yrsn4.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Comment un microscope fonctionne-t-il ?</strong><span>C'est pas sorcier</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=VPaIB6PHV8g" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-VPaIB6PHV8g.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Voyage dans l'invisible</strong><span>C'est pas sorcier</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 1</summary><ul>
+        <li>R. Hooke, <i>Micrographia</i> (1665), texte intégral : <a href="https://www.gutenberg.org/ebooks/15491" target="_blank" rel="noopener">Projet Gutenberg</a></li>
+        <li>N. Lane, « The unseen world: reflections on Leeuwenhoek (1677) », <i>Philosophical Transactions of the Royal Society B</i>, 2015 : <a href="https://doi.org/10.1098/rstb.2014.0344" target="_blank" rel="noopener">doi.org/10.1098/rstb.2014.0344</a></li>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Robert_Hooke" target="_blank" rel="noopener">Robert Hooke</a>, <a href="https://fr.wikipedia.org/wiki/Antoni_van_Leeuwenhoek" target="_blank" rel="noopener">Antoni van Leeuwenhoek</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 2 : THEORIE CELLULAIRE ============ -->
+  <article class="chapter sci" id="cellule" aria-labelledby="ch2-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 2</span><span>·</span><span>SVT</span><span class="kind">Découverte scientifique</span></p>
+        <p class="chapter-year">1838</p>
+        <div class="chapter-title">
+          <h2 id="ch2-title">Tous les êtres vivants sont faits de cellules</h2>
+          <p class="who">Robert Brown · Matthias Schleiden · Theodor Schwann · Rudolf Virchow</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">L'essentiel</span></h3>
+            <p>Pendant près de deux siècles, on observe des cellules sans comprendre qu'elles sont la base de tout le vivant. Les microscopes s'améliorent au début du XIX<sup>e</sup> siècle (lentilles qui ne déforment plus les couleurs), et les observations deviennent plus fiables.</p>
+            <ul>
+              <li><b>1831 · Robert Brown</b> remarque dans les cellules d'orchidée une petite tache ronde : il la nomme <b>noyau</b>.</li>
+              <li><b>1838 · Matthias Schleiden</b>, botaniste, affirme que toutes les plantes sont faites de cellules.</li>
+              <li><b>1839 · Theodor Schwann</b> montre que c'est aussi vrai pour les animaux.</li>
+              <li><b>1855 · Rudolf Virchow</b> complète : une cellule naît toujours d'une autre cellule, par division.</li>
+            </ul>
+          </section>
+          <p class="keyfact">« Omnis cellula e cellula » : toute cellule provient d'une cellule.<small>Rudolf Virchow, 1855 (idée aussi défendue par Robert Remak).</small></p>
+          <section>
+            <h3><span class="mono">La théorie cellulaire</span></h3>
+            <p>On la résume en trois idées : <b>1)</b> tous les êtres vivants sont formés d'une ou de plusieurs cellules ; <b>2)</b> la cellule est la plus petite unité vivante ; <b>3)</b> toute cellule provient de la division d'une cellule déjà existante.</p>
+            <p>C'est un bel exemple de savoir construit petit à petit, par plusieurs scientifiques qui confrontent leurs observations.</p>
+          </section>
+          <div class="experiment">
+            <h3><span class="mono">Expérience historique</span> La comparaison de Schwann</h3>
+            <p>Schwann discute avec Schleiden en 1837 et remarque que les cellules de la corde dorsale d'un têtard (un tissu animal) ressemblent beaucoup aux cellules végétales : même forme de petite boîte, chacune avec un noyau. Il compare ensuite de nombreux tissus animaux (cartilage, muscle, nerf) et retrouve partout des cellules avec un noyau. Conclusion : animaux et plantes sont construits sur le même plan.</p>
+          </div>
+        </div>
+        <div class="figures">
+          <figure class="portrait"><img src="img/schleiden.jpg" width="648" height="720" alt="Portrait gravé de Matthias Schleiden" loading="lazy"><figcaption><b>Matthias Schleiden</b> (1804-1881), botaniste allemand.</figcaption></figure>
+          <figure class="portrait"><img src="img/schwann.jpg" width="536" height="720" alt="Photographie de Theodor Schwann âgé" loading="lazy"><figcaption><b>Theodor Schwann</b> (1810-1882), physiologiste allemand.</figcaption></figure>
+          <figure class="portrait"><img src="img/virchow.jpg" width="566" height="720" alt="Photographie de Rudolf Virchow" loading="lazy"><figcaption><b>Rudolf Virchow</b> (1821-1902), médecin allemand.</figcaption></figure>
+          <figure class="portrait"><img src="img/brown.jpg" width="591" height="720" alt="Photographie de Robert Brown" loading="lazy"><figcaption><b>Robert Brown</b> (1773-1858), botaniste écossais.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench reverse">
+        <div class="bench-view"><canvas id="sim-mitosis" class="round" width="760" height="760" aria-label="Animation : une cellule se divise en deux cellules filles"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Animation · La division cellulaire</p>
+          <h3>Une cellule en donne deux</h3>
+          <p>C'est ce que Virchow a compris : les cellules ne naissent pas de rien. Chaque cellule copie son ADN, puis se partage en deux cellules filles identiques.</p>
+          <ol class="steps" id="mitosis-steps">
+            <li>Une cellule avec son noyau</li>
+            <li>L'ADN est copié puis se condense en chromosomes</li>
+            <li>Les chromosomes sont tirés vers les deux pôles</li>
+            <li>La cellule s'étrangle en son milieu</li>
+            <li>Deux cellules filles identiques</li>
+          </ol>
+          <div class="controls"><button class="btn" id="mitosis-play" type="button" aria-pressed="true">Pause</button><button class="btn ghost" id="mitosis-step" type="button">Étape suivante</button></div>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h3>Vidéos pour aller plus loin</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=4OpBylwH9DU" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-4OpBylwH9DU.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VO anglaise · sous-titres FR</span><strong>The wacky history of cell theory</strong><span>TED-Ed</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=jSRMqO0e908" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-jSRMqO0e908.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Tout savoir sur la cellule en 6 minutes</strong><span>Sciences Nat'</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 2</summary><ul>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Th%C3%A9orie_cellulaire" target="_blank" rel="noopener">Théorie cellulaire</a></li>
+        <li>Manuel de SVT Seconde, thème « La Terre, la vie et l'organisation du vivant », chapitre sur la cellule (activités 1, 2 et 3 du cours).</li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 3 : RADIOACTIVITE ============ -->
+  <article class="chapter sci" id="radioactivite" aria-labelledby="ch3-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 3</span><span>·</span><span>Physique-Chimie</span><span class="kind">Découverte scientifique</span></p>
+        <p class="chapter-year">1898</p>
+        <div class="chapter-title">
+          <h2 id="ch3-title">La radioactivité : la matière qui se transforme</h2>
+          <p class="who">Henri Becquerel · Marie Curie (1867-1934) · Pierre Curie</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">L'essentiel</span></h3>
+            <p>Certains noyaux d'atomes sont instables. Un jour ou l'autre, ils se transforment en un autre noyau en émettant un rayonnement invisible : c'est la <b>radioactivité</b>. On ne peut pas prévoir quand un noyau précis va se désintégrer, mais on sait qu'au bout d'une durée appelée <b>demi-vie</b>, la moitié des noyaux d'un échantillon s'est transformée.</p>
+            <p>Cette découverte a bouleversé une idée très ancienne : l'atome n'est pas immuable, la matière peut changer de nature toute seule.</p>
+          </section>
+          <section>
+            <h3><span class="mono">Marie Curie</span></h3>
+            <p>Née Maria Skłodowska à Varsovie, Marie Curie choisit pour sa thèse d'étudier les « rayons uraniques » découverts par Becquerel. Elle mesure leur intensité avec un appareil très sensible inventé par Pierre Curie et son frère.</p>
+            <p>Elle remarque qu'un minerai, la pechblende, est bien plus actif que l'uranium qu'il contient : il doit cacher d'autres éléments. En 1898, Marie et Pierre Curie découvrent ainsi le <b>polonium</b> (nommé en l'honneur de la Pologne) puis le <b>radium</b>. C'est Marie Curie qui invente le mot « radioactivité ».</p>
+          </section>
+          <p class="keyfact">Seule personne à avoir reçu deux prix Nobel dans deux sciences différentes.<small>Physique en 1903 (avec Pierre Curie et Henri Becquerel), chimie en 1911.</small></p>
+          <div class="experiment">
+            <h3><span class="mono">Expérience historique</span> La plaque de Becquerel (1896)</h3>
+            <ol>
+              <li>Becquerel enveloppe une plaque photographique dans du papier noir, pour que la lumière ne puisse pas l'atteindre.</li>
+              <li>Il pose dessus des sels d'uranium et une petite croix de cuivre.</li>
+              <li>Le temps est nuageux : il range le tout dans un tiroir pendant plusieurs jours.</li>
+              <li>En développant la plaque, il voit quand même l'ombre de la croix.</li>
+            </ol>
+            <p style="margin-top:.7rem">Conclusion : l'uranium émet de lui-même un rayonnement qui traverse le papier, sans avoir besoin de lumière.</p>
+          </div>
+        </div>
+        <div class="figures">
+          <figure class="portrait"><img src="img/curie.jpg" width="529" height="720" alt="Photographie de Marie Curie vers 1920" loading="lazy"><figcaption><b>Marie Curie</b> vers 1920.</figcaption></figure>
+          <figure class="doc"><img src="img/becquerel-plate.jpg" width="720" height="581" alt="Plaque photographique de Becquerel avec des taches sombres et l'ombre d'une croix" loading="lazy"><figcaption><b>La plaque de Becquerel</b> (1896). Les zones sombres ont été impressionnées par le rayonnement de l'uranium ; on voit l'ombre de la croix en bas.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench">
+        <div class="bench-view wide"><canvas id="sim-decay" width="1200" height="760" aria-label="Simulation : désintégration de 100 noyaux radioactifs et courbe de décroissance"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Simulation · 100 noyaux de radium</p>
+          <h3>Le hasard qui devient une loi</h3>
+          <p>À chaque demi-vie (environ 1 600 ans pour le radium 226), chaque noyau a une chance sur deux de se désintégrer. Impossible de savoir lequel. Pourtant, sur un grand nombre, le résultat suit toujours la même courbe.</p>
+          <div class="controls">
+            <button class="btn" id="decay-step" type="button">Une demi-vie passe</button>
+            <button class="btn ghost" id="decay-auto" type="button" aria-pressed="false">Automatique</button>
+            <button class="btn ghost" id="decay-reset" type="button">Recommencer</button>
+          </div>
+          <p class="readout" id="decay-readout" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h3>Vidéos pour aller plus loin</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=hoa2jdUJ1Bg" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-hoa2jdUJ1Bg.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>La découverte de la radioactivité</strong><span>CEA · Histoire des sciences</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=0LP5VaNqk58" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-0LP5VaNqk58.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Qu'est-ce que la radioactivité ?</strong><span>C'est pas sorcier</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 3</summary><ul>
+        <li>Fondation Nobel : <a href="https://www.nobelprize.org/prizes/physics/1903/summary/" target="_blank" rel="noopener">prix Nobel de physique 1903</a> et <a href="https://www.nobelprize.org/prizes/chemistry/1911/summary/" target="_blank" rel="noopener">prix Nobel de chimie 1911</a></li>
+        <li>CEA, « La découverte de la radioactivité », vidéo Histoire des sciences.</li>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Marie_Curie" target="_blank" rel="noopener">Marie Curie</a>, <a href="https://fr.wikipedia.org/wiki/Radioactivit%C3%A9" target="_blank" rel="noopener">Radioactivité</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 4 : RUTHERFORD ============ -->
+  <article class="chapter sci" id="atome" aria-labelledby="ch4-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 4</span><span>·</span><span>Physique-Chimie</span><span class="kind">Découverte scientifique</span></p>
+        <p class="chapter-year">1911</p>
+        <div class="chapter-title">
+          <h2 id="ch4-title">Au cœur de l'atome : le noyau</h2>
+          <p class="who">Ernest Rutherford (1871-1937) · Hans Geiger · Ernest Marsden</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">L'essentiel</span></h3>
+            <p>Au début du XX<sup>e</sup> siècle, on sait que l'atome contient des électrons (chargés négativement), découverts par J. J. Thomson en 1897. Thomson imagine l'atome comme une boule de charge positive dans laquelle les électrons sont dispersés, un peu comme les raisins dans un gâteau.</p>
+            <p>Rutherford veut tester ce modèle. Il utilise justement la radioactivité : certains éléments émettent des particules α (alpha), chargées positivement et très rapides. Il s'en sert comme de minuscules projectiles.</p>
+          </section>
+          <div class="experiment">
+            <h3><span class="mono">Expérience historique</span> La feuille d'or (1909-1911)</h3>
+            <ol>
+              <li>Une source radioactive envoie un faisceau de particules α vers une feuille d'or très fine (quelques centaines d'atomes d'épaisseur).</li>
+              <li>Un écran fluorescent placé tout autour fait une petite étincelle à chaque particule reçue.</li>
+              <li>Geiger et Marsden comptent les étincelles, à la main, dans le noir.</li>
+            </ol>
+            <p style="margin-top:.7rem"><b>Résultat :</b> presque toutes les particules traversent la feuille sans être déviées. Mais quelques-unes (environ 1 sur 8 000) rebondissent vers l'arrière !</p>
+          </div>
+          <p class="keyfact">« C'était aussi incroyable que de tirer un obus sur une feuille de papier et de le voir revenir vers soi. »<small>Ernest Rutherford, à propos des particules renvoyées (citation traduite).</small></p>
+          <section>
+            <h3><span class="mono">Conclusion</span></h3>
+            <p>L'atome est surtout fait de <b>vide</b>. Toute sa charge positive et presque toute sa masse sont concentrées dans un <b>noyau</b> minuscule, environ 100 000 fois plus petit que l'atome. Si l'atome avait la taille d'un stade de football, le noyau serait une bille au centre.</p>
+          </section>
+        </div>
+        <div class="figures">
+          <figure class="portrait wide" style="max-width:340px"><img src="img/rutherford.jpg" width="541" height="720" alt="Photographie d'Ernest Rutherford" loading="lazy"><figcaption><b>Ernest Rutherford</b>, physicien néo-zélandais, prix Nobel de chimie 1908.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench reverse">
+        <div class="bench-view wide"><canvas id="sim-rutherford" width="1200" height="720" aria-label="Simulation de l'expérience de Rutherford : des particules alpha traversent une feuille d'or"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Simulation · Particules α contre feuille d'or</p>
+          <h3>Comparez les deux modèles</h3>
+          <p>Avec le modèle de Thomson, la charge positive est étalée : rien ne devrait dévier. Avec le modèle de Rutherford, les rares particules qui passent près d'un noyau sont violemment repoussées.</p>
+          <div class="controls">
+            <div class="seg" role="group" aria-label="Modèle de l'atome">
+              <button class="btn" type="button" data-model="thomson" aria-pressed="false">Thomson</button>
+              <button class="btn" type="button" data-model="rutherford" aria-pressed="true">Rutherford</button>
+            </div>
+          </div>
+          <p class="readout" id="ruth-readout" aria-live="off"></p>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h3>Vidéo pour aller plus loin</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=PjWVxXRHeDk" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-PjWVxXRHeDk.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Expérience de la feuille d'or de Rutherford</strong><span>Khan Academy Francophone</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 4</summary><ul>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Exp%C3%A9rience_de_Rutherford" target="_blank" rel="noopener">Expérience de Rutherford</a></li>
+        <li>Fondation Nobel : <a href="https://www.nobelprize.org/prizes/chemistry/1908/rutherford/facts/" target="_blank" rel="noopener">Ernest Rutherford, prix Nobel de chimie 1908</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 5 : BIG BANG ============ -->
+  <article class="chapter sci" id="big-bang" aria-labelledby="ch5-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 5</span><span>·</span><span>Physique-Chimie</span><span class="kind">Découverte scientifique</span></p>
+        <p class="chapter-year">1927</p>
+        <div class="chapter-title">
+          <h2 id="ch5-title">Le Big Bang : l'origine de la matière</h2>
+          <p class="who">Georges Lemaître (1894-1966) · Edwin Hubble · Arno Penzias et Robert Wilson</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">L'essentiel</span></h3>
+            <p>En 1927, le Belge Georges Lemaître, prêtre et physicien, montre à partir des équations d'Einstein que l'Univers ne peut pas être immobile : il doit être <b>en expansion</b>. Les galaxies s'éloignent les unes des autres, et d'autant plus vite qu'elles sont loin. En 1929, l'astronome américain Edwin Hubble confirme cette fuite des galaxies par l'observation.</p>
+            <p>En 1931, Lemaître va plus loin : si l'Univers grandit, alors dans le passé il était beaucoup plus petit, plus dense et plus chaud. Il propose l'idée d'un « atome primitif ». Le nom moqueur de « Big Bang » sera donné plus tard, en 1949, par l'astronome Fred Hoyle.</p>
+          </section>
+          <section>
+            <h3><span class="mono">D'où vient la matière ?</span></h3>
+            <p>Dans les premières minutes, il fait si chaud que seuls les noyaux les plus simples se forment : <b>hydrogène</b> et <b>hélium</b>. Les éléments plus lourds (carbone, oxygène, fer…) seront fabriqués bien plus tard, au cœur des étoiles, puis dispersés quand elles meurent. Les atomes de notre corps viennent donc en grande partie d'anciennes étoiles.</p>
+          </section>
+          <p class="keyfact">L'Univers a environ 13,8 milliards d'années.<small>La « lumière fossile » du Big Bang, le fond diffus cosmologique, a été détectée par hasard en 1965 par Penzias et Wilson.</small></p>
+          <div class="experiment">
+            <h3><span class="mono">Expérience à faire</span> Le ballon qui gonfle</h3>
+            <ol>
+              <li>Dessiner une dizaine de points (les galaxies) sur un ballon de baudruche à moitié gonflé.</li>
+              <li>Mesurer avec un fil la distance entre un point choisi et trois autres points.</li>
+              <li>Gonfler davantage le ballon et mesurer de nouveau.</li>
+            </ol>
+            <p style="margin-top:.7rem">Tous les points s'éloignent les uns des autres, et les plus lointains s'éloignent le plus. Aucun point n'est le centre : c'est l'espace lui-même qui grandit.</p>
+          </div>
+        </div>
+        <div class="figures">
+          <figure class="portrait"><img src="img/lemaitre.jpg" width="481" height="720" alt="Photographie de Georges Lemaître vers 1930" loading="lazy"><figcaption><b>Georges Lemaître</b> vers 1930, professeur à l'université de Louvain.</figcaption></figure>
+          <figure class="doc" style="align-self:end"><img src="img/wmap.jpg" width="720" height="360" alt="Carte ovale du ciel entier montrant des taches de température colorées" loading="lazy"><figcaption><b>Le fond diffus cosmologique</b>, photographié par le satellite WMAP (NASA). C'est la plus vieille lumière de l'Univers, émise 380 000 ans après le Big Bang.</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench">
+        <div class="bench-view"><canvas id="sim-cosmos" class="round" width="760" height="760" aria-label="Animation : l'Univers qui grandit et se refroidit depuis le Big Bang"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Animation · 13,8 milliards d'années en un curseur</p>
+          <h3 id="cosmos-title">Le Big Bang</h3>
+          <p id="cosmos-text"></p>
+          <div class="slider-row">
+            <label for="cosmos-range"><span>Big Bang</span><span>Âge de l'Univers</span><span>Aujourd'hui</span></label>
+            <input type="range" id="cosmos-range" min="0" max="5" step="0.01" value="0">
+          </div>
+          <p class="readout" id="cosmos-readout" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h3>Série vidéo · L'origine des éléments chimiques</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=Jp5XXrVUcmw" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-Jp5XXrVUcmw.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF · épisode 1</span><strong>Du Big Bang à nous</strong><span>Observatoire de Paris</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=d7yaMkP-PTU" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-d7yaMkP-PTU.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF · épisode 2</span><strong>Au cœur des étoiles</strong><span>Observatoire de Paris</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=LFR2OjzhrYw" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-LFR2OjzhrYw.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF · épisode 3</span><strong>Des étoiles à la Terre</strong><span>Observatoire de Paris</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 5</summary><ul>
+        <li>Observatoire de Paris, série « L'origine des éléments chimiques », épisodes 1 à 3.</li>
+        <li>NASA, mission WMAP : <a href="https://map.gsfc.nasa.gov/" target="_blank" rel="noopener">map.gsfc.nasa.gov</a></li>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Georges_Lema%C3%AEtre" target="_blank" rel="noopener">Georges Lemaître</a>, <a href="https://fr.wikipedia.org/wiki/Big_Bang" target="_blank" rel="noopener">Big Bang</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 6 : MICROSCOPES ELECTRONIQUE & TUNNEL ============ -->
+  <article class="chapter tech" id="voir-atomes" aria-labelledby="ch6-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 6</span><span>·</span><span>SVT et Physique-Chimie</span><span class="kind">Innovation technique</span></p>
+        <p class="chapter-year">1931</p>
+        <div class="chapter-title">
+          <h2 id="ch6-title">Voir jusqu'aux atomes</h2>
+          <p class="who">Ernst Ruska et Max Knoll (1931) · Gerd Binnig et Heinrich Rohrer (1981)</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">La limite de la lumière</span></h3>
+            <p>En 1873, le physicien Ernst Abbe démontre qu'un microscope optique, même parfait, ne peut pas distinguer deux points plus proches qu'environ <b>0,2 micromètre</b>. La lumière est une onde, et l'on ne peut pas voir des détails plus petits qu'environ la moitié de sa longueur d'onde. Les virus, l'intérieur des cellules ou l'ADN restent donc invisibles.</p>
+          </section>
+          <section>
+            <h3><span class="mono">1931 · Le microscope électronique</span></h3>
+            <p>Les Allemands Ernst Ruska et Max Knoll remplacent la lumière par un faisceau d'<b>électrons</b>, dont la longueur d'onde est des milliers de fois plus petite. Les lentilles en verre sont remplacées par des <b>bobines magnétiques</b> qui dévient les électrons, et tout se passe dans le vide. Dès 1933, leur appareil dépasse le meilleur microscope optique.</p>
+            <p>Grâce à lui, on découvre l'intérieur de la cellule (mitochondries, membranes…) et on voit enfin les virus. Inconvénient : l'échantillon doit être placé dans le vide, il ne peut donc pas être vivant.</p>
+          </section>
+          <section>
+            <h3><span class="mono">1981 · Le microscope à effet tunnel</span></h3>
+            <p>Chez IBM, à Zurich, Gerd Binnig et Heinrich Rohrer inventent un microscope sans lentille. Une pointe métallique très fine, terminée par un seul atome, se promène à moins d'un nanomètre d'une surface. Des électrons « sautent » entre la pointe et la surface : c'est l'<b>effet tunnel</b>. Ce courant change énormément avec la distance, ce qui permet de suivre le relief atome par atome.</p>
+          </section>
+          <p class="keyfact">1986 : un prix Nobel de physique partagé entre Ruska, Binnig et Rohrer.<small>En 1989, Donald Eigler (IBM) écrit « IBM » en déplaçant 35 atomes de xénon un par un avec un microscope à effet tunnel.</small></p>
+        </div>
+        <div class="figures">
+          <figure class="portrait wide" style="max-width:340px"><img src="img/ruska-microscope.jpg" width="418" height="720" alt="Microscope électronique d'Ernst Ruska exposé au Deutsches Museum : une colonne métallique dans une armoire noire" loading="lazy"><figcaption><b>Un microscope électronique construit par Ernst Ruska</b>, exposé au Deutsches Museum de Munich. La colonne métallique contient les bobines magnétiques ; tout est maintenu sous vide.</figcaption></figure>
+        </div>
+      </div>
+
+      <figure class="diagram">
+        <div class="diagram-scroll">
+          <svg viewBox="0 0 860 330" role="img" aria-labelledby="dg2-t">
+            <title id="dg2-t">Comparaison entre un microscope optique et un microscope électronique</title>
+            <text x="200" y="26" text-anchor="middle" class="lbl-title">Microscope optique</text>
+            <text x="640" y="26" text-anchor="middle" class="lbl-title">Microscope électronique</text>
+            <line x1="430" y1="12" x2="430" y2="320" stroke="var(--rule)"/>
+            <!-- optique -->
+            <circle cx="200" cy="300" r="12" fill="var(--brass)"/><path d="M200 288 L200 60" stroke="var(--brass)" stroke-width="10" opacity=".22"/>
+            <ellipse cx="200" cy="250" rx="46" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <rect x="160" y="208" width="80" height="6" fill="var(--pink)" opacity=".8"/>
+            <ellipse cx="200" cy="160" rx="34" ry="7" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <ellipse cx="200" cy="80" rx="40" ry="8" fill="var(--blue)" opacity=".3" stroke="var(--blue)"/>
+            <path d="M184 44 q16 -14 32 0" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <text x="250" y="304">Lampe (lumière visible)</text>
+            <text x="258" y="254">Condenseur en verre</text>
+            <text x="250" y="214">Échantillon (peut être vivant)</text>
+            <text x="244" y="164">Objectif en verre</text>
+            <text x="250" y="84">Oculaire + œil</text>
+            <text x="30" y="214" class="sub">air libre</text>
+            <!-- electronique -->
+            <rect x="610" y="44" width="60" height="22" rx="4" fill="var(--ink)"/><path d="M640 66 L640 280" stroke="var(--blue)" stroke-width="3" stroke-dasharray="2 5"/>
+            <g fill="none" stroke="var(--brass)" stroke-width="5"><rect x="606" y="96" width="68" height="20" rx="6"/><rect x="606" y="176" width="68" height="20" rx="6"/><rect x="606" y="226" width="68" height="20" rx="6"/></g>
+            <rect x="600" y="148" width="80" height="5" fill="var(--pink)" opacity=".8"/>
+            <rect x="590" y="282" width="100" height="10" fill="var(--blue)" opacity=".55"/>
+            <rect x="572" y="36" width="136" height="266" rx="10" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/>
+            <text x="720" y="60">Canon à électrons</text>
+            <text x="720" y="110">Bobine magnétique</text>
+            <text x="720" y="153">Échantillon (mort, sous vide)</text>
+            <text x="720" y="200">Bobines = « lentilles »</text>
+            <text x="720" y="292">Écran ou caméra</text>
+            <text x="476" y="320" class="sub">Tout est enfermé dans le vide</text>
+          </svg>
+        </div>
+        <figcaption><b>Schéma · Optique contre électronique.</b> Le principe est le même (une source, un échantillon, des lentilles qui agrandissent), mais les électrons permettent de voir environ 1 000 fois plus petit.</figcaption>
+      </figure>
+
+      <div class="bench">
+        <div class="bench-view wide"><canvas id="sim-stm" width="1200" height="700" aria-label="Animation : la pointe d'un microscope à effet tunnel suit le relief des atomes"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Animation · Microscope à effet tunnel</p>
+          <h3>Lire les atomes comme du braille</h3>
+          <p>La pointe balaie la surface en gardant le courant tunnel constant. Pour cela, elle monte au-dessus de chaque atome et redescend entre deux. En enregistrant ces mouvements ligne après ligne, l'ordinateur reconstruit une image des atomes.</p>
+          <p class="readout" id="stm-readout" aria-live="off"></p>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h3>Vidéos pour aller plus loin</h3>
+        <div class="video-row">
+          <a class="video" href="https://www.youtube.com/watch?v=DM_Q4eQHDLc" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-DM_Q4eQHDLc.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>2 mn pour comprendre le microscope électronique</strong><span>RTI</span></span></a>
+          <a class="video" href="https://www.youtube.com/watch?v=ISq4_wNBI9g" target="_blank" rel="noopener"><span class="thumb"><img src="img/yt-ISq4_wNBI9g.jpg" width="480" height="360" alt="" loading="lazy"></span><span class="meta"><span class="lang">VF</span><strong>Microscope à effet tunnel : jouer avec les atomes</strong><span>Le Blob</span></span></a>
+        </div>
+      </div>
+      <details class="sources"><summary>Sources du chapitre 6</summary><ul>
+        <li>Fondation Nobel : <a href="https://www.nobelprize.org/prizes/physics/1986/summary/" target="_blank" rel="noopener">prix Nobel de physique 1986</a></li>
+        <li>D. M. Eigler et E. K. Schweizer, « Positioning single atoms with a scanning tunnelling microscope », <i>Nature</i> 344, 1990 : <a href="https://doi.org/10.1038/344524a0" target="_blank" rel="noopener">doi.org/10.1038/344524a0</a></li>
+        <li>Wikipédia : <a href="https://fr.wikipedia.org/wiki/Microscope_%C3%A9lectronique" target="_blank" rel="noopener">Microscope électronique</a>, <a href="https://fr.wikipedia.org/wiki/Microscope_%C3%A0_effet_tunnel" target="_blank" rel="noopener">Microscope à effet tunnel</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ CH 7 : ESPACE ============ -->
+  <article class="chapter tech" id="espace" aria-labelledby="ch7-title">
+    <div class="wrap">
+      <header class="chapter-head">
+        <p class="chapter-num"><span>Chapitre 7</span><span>·</span><span>Physique-Chimie et SVT</span><span class="kind">Innovation technique</span></p>
+        <p class="chapter-year">2023</p>
+        <div class="chapter-title">
+          <h2 id="ch7-title">La matière en apesanteur</h2>
+          <p class="who">Thomas Pesquet (ISS, 2017) · Sultan Al Neyadi (ISS, 2023)</p>
+        </div>
+      </header>
+      <div class="chapter-body">
+        <div class="prose">
+          <section>
+            <h3><span class="mono">Pourquoi expérimenter dans l'espace ?</span></h3>
+            <p>Dans la Station spatiale internationale (ISS), tout flotte : c'est la <b>microgravité</b>. Sur Terre, quand des cristaux se forment dans un liquide, les plus lourds tombent au fond (c'est la <b>sédimentation</b>) et le liquide se mélange tout seul en remuant (la <b>convection</b>). Dans l'ISS, ces deux effets disparaissent presque. La matière s'organise plus calmement et plus régulièrement.</p>
+          </section>
+          <section>
+            <h3><span class="mono">2017 · Thomas Pesquet</span> et un médicament contre le cancer</h3>
+            <p>Pendant sa mission Proxima, l'astronaute français de l'Agence spatiale européenne participe à une expérience du laboratoire Merck : faire cristalliser le <b>pembrolizumab</b>, l'anticorps du médicament anticancéreux Keytruda.</p>
+            <p>En microgravité, les cristaux obtenus sont plus petits, de taille très régulière, et forment un liquide moins épais. Les chercheurs ont ensuite reproduit ces conditions sur Terre. But : pouvoir un jour injecter le médicament par une simple piqûre sous la peau, au lieu d'une longue perfusion à l'hôpital.</p>
+          </section>
+          <section>
+            <h3><span class="mono">2023 · Sultan Al Neyadi</span> et la bio-impression 3D</h3>
+            <p>L'astronaute émirien a passé environ six mois dans l'ISS, la plus longue mission spatiale d'un astronaute arabe. Avec ses collègues de l'équipage, il a utilisé la <b>BioFabrication Facility</b> de l'entreprise Redwire, une imprimante 3D d'un genre particulier.</p>
+            <p>Au lieu de plastique, elle dépose une <b>bio-encre</b> : un gel qui contient des cellules vivantes, couche après couche. Sur Terre, un tissu mou s'écrase sous son propre poids pendant l'impression. En microgravité, il garde sa forme. En 2023, la station a ainsi imprimé le premier <b>ménisque</b> humain (un cartilage du genou) dans l'espace.</p>
+          </section>
+          <p class="keyfact">Comprendre la matière sert aussi à soigner.<small>Ces expériences relient les trois disciplines du projet : la chimie des cristaux, la biologie des cellules et le numérique des imprimantes 3D.</small></p>
+        </div>
+        <div class="figures">
+          <figure class="portrait"><img src="img/pesquet.jpg" width="540" height="720" alt="Portrait officiel de Thomas Pesquet en combinaison spatiale" loading="lazy"><figcaption><b>Thomas Pesquet</b>, astronaute de l'ESA, portrait officiel (NASA, 2016).</figcaption></figure>
+          <figure class="portrait"><img src="img/alneyadi.jpg" width="482" height="720" alt="Portrait officiel de Sultan Al Neyadi en combinaison" loading="lazy"><figcaption><b>Sultan Al Neyadi</b>, astronaute des Émirats arabes unis, mission SpaceX Crew-6 (2023).</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="bench reverse">
+        <div class="bench-view wide"><canvas id="sim-gravity" width="1200" height="700" aria-label="Animation : cristaux qui se forment sur Terre et dans l'ISS"></canvas></div>
+        <div class="bench-text">
+          <p class="eyebrow">Animation · Cristallisation comparée</p>
+          <h3>Sur Terre ou dans l'ISS ?</h3>
+          <p>À gauche, les cristaux tombent, se tassent au fond et grandissent de façon inégale. À droite, en microgravité, ils restent répartis dans le liquide et grandissent tous à la même vitesse.</p>
+          <div class="controls"><button class="btn" id="gravity-reset" type="button">Relancer la cristallisation</button></div>
+          <p class="readout" id="gravity-readout" aria-live="off"></p>
+        </div>
+      </div>
+
+      <details class="sources"><summary>Sources du chapitre 7</summary><ul>
+        <li>ISS National Laboratory, résultats de l'expérience Merck sur le pembrolizumab : <a href="https://www.issnationallab.org/merck-lab-publishes-pembrolizumab-results/" target="_blank" rel="noopener">issnationallab.org</a></li>
+        <li>P. Reichert et al., « Pembrolizumab microgravity crystallization experimentation », <i>npj Microgravity</i>, 2019 : <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6889310/" target="_blank" rel="noopener">article en libre accès</a></li>
+        <li>Redwire, impression du premier ménisque humain sur l'ISS (2023) : <a href="https://ir.rdw.com/news-events/press-releases/detail/103/redwire-bioprinter-wins-a-popular-science-2023-best-of" target="_blank" rel="noopener">communiqué de presse</a></li>
+      </ul></details>
+    </div>
+  </article>
+
+  <!-- ============ QUIZ ============ -->
+  <section class="section" id="quiz" aria-labelledby="quiz-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="quiz-title">Testez-vous</h2>
+        <p>Huit questions sur les sept chapitres. Chaque réponse est expliquée.</p>
+      </div>
+      <div class="quiz" id="quiz-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="credits" id="sources">
+  <div class="wrap">
+    <div>
+      <h2>Comment ce site a été construit</h2>
+      <ul>
+        <li>Les informations viennent du cours (activités 1, 2 et 3), des documents des professeurs et des sources listées à la fin de chaque chapitre.</li>
+        <li>Les textes ont été reformulés pour un public de lycée ; les dates ont été vérifiées sur au moins deux sources.</li>
+        <li>Les animations sont des modèles simplifiés : elles montrent une idée, pas une mesure réelle.</li>
+        <li>Site en HTML, CSS et JavaScript, sans framework ni bibliothèque externe, hébergé sur GitHub Pages (NSI). Les animations sont dessinées en direct dans des balises <code>canvas</code>.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Crédits des images</h2>
+      <ul>
+        <li>Gravures de Hooke, <i>Micrographia</i> (1665) · domaine public</li>
+        <li>Portrait de Leeuwenhoek, Jan Verkolje, Rijksmuseum · domaine public</li>
+        <li>Réplique du microscope de Leeuwenhoek · Jeroen Rouwkema, CC BY-SA 3.0</li>
+        <li>Theodor Schwann · Wellcome Collection, CC BY 4.0</li>
+        <li>Schleiden, Virchow, Brown, Curie, Rutherford, Lemaître · domaine public</li>
+        <li>Plaque de Becquerel (1896) · domaine public</li>
+        <li>Microscope de Ruska · J. Brew, Deutsches Museum, CC BY-SA 3.0</li>
+        <li>Fond diffus WMAP, portraits de T. Pesquet et S. Al Neyadi · NASA, domaine public</li>
+        <li>Images trouvées sur Wikimedia Commons · miniatures des vidéos © leurs auteurs</li>
+      </ul>
+    </div>
+    <p class="made"><span>Voyage dans l'histoire de la matière · projet interdisciplinaire SVT, Physique-Chimie, NSI et Arts</span><span>Classe de Seconde · Lycée Libanais Francophone Privé Meydan</span></p>
+  </div>
+</footer>
+
+<script src="js/core.js"></script>
+<script src="js/draw.js"></script>
+<script src="js/sims-life.js"></script>
+<script src="js/sims-matter.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
