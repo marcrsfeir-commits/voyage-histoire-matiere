@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Young+Serif&display=swap">
-<link rel="stylesheet" href="css/style.css?v=202610081016">
+<link rel="stylesheet" href="css/style.css?v=202610201113">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fafbf9' stroke='%23142029' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23b8326a'/%3E%3C/svg%3E">
 <meta property="og:title" content="Voyage dans l'histoire de la matière">
 <meta property="og:description" content="Sept découvertes, de Hooke au Big Bang et à l'ISS : expériences, animations, vidéos et quiz.">
@@ -64,10 +64,27 @@
     <div class="wrap">
       <div class="section-head">
         <h2 id="frise-title">Le fil du temps</h2>
-        <p>Sur ordinateur, les dates sont placées à l'échelle entre 1580 et 2025 ; sur téléphone, elles défilent dans l'ordre, espacées selon le temps écoulé. Le Big Bang, il y a 13,8 milliards d'années, ne tiendrait sur aucun écran : l'axe est coupé. Touchez un événement souligné pour ouvrir son chapitre.</p>
+        <p>Seize étapes, du Big Bang à l'ISS. Cliquez sur un événement, ou faites glisser le long de la règle pour voyager dans le temps : les dates sont à l'échelle entre 1580 et 2025. Sur téléphone, touchez un événement pour l'ouvrir.</p>
       </div>
-      <div class="timeline-scroll" tabindex="0" aria-label="Frise chronologique, défilement horizontal">
-        <div class="timeline" id="timeline"></div>
+      <div class="frise" id="frise-app">
+        <div class="frise-bar">
+          <div class="chips" role="group" aria-label="Filtrer les événements">
+            <button type="button" class="chip" data-filter="all" aria-pressed="true">Tout</button>
+            <button type="button" class="chip tech" data-filter="tech" aria-pressed="false">Innovations techniques</button>
+            <button type="button" class="chip sci" data-filter="sci" aria-pressed="false">Découvertes scientifiques</button>
+            <button type="button" class="chip" data-filter="SVT" aria-pressed="false">SVT</button>
+            <button type="button" class="chip" data-filter="PC" aria-pressed="false">Physique-Chimie</button>
+          </div>
+          <div class="frise-nav">
+            <button type="button" class="nav-btn" id="frise-prev" aria-label="Événement précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button type="button" class="nav-btn play" id="frise-play" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5l11 7-11 7z"/><path class="i-pause" d="M8 5v14M16 5v14"/></svg><span>Visite guidée</span></button>
+            <button type="button" class="nav-btn" id="frise-next" aria-label="Événement suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        </div>
+        <div class="frise-stage">
+          <div class="frise-track" id="frise-track" aria-label="Frise chronologique interactive. Flèches gauche et droite pour changer d'événement."></div>
+        </div>
+        <article class="frise-card" id="frise-card" aria-live="polite"></article>
       </div>
     </div>
   </section>
@@ -704,10 +721,12 @@
   </div>
 </footer>
 
-<script src="js/core.js?v=202610081016"></script>
-<script src="js/draw.js?v=202610081016"></script>
-<script src="js/sims-life.js?v=202610081016"></script>
-<script src="js/sims-matter.js?v=202610081016"></script>
-<script src="js/main.js?v=202610081016"></script>
+<script src="js/core.js?v=202610201113"></script>
+<script src="js/draw.js?v=202610201113"></script>
+<script src="js/sims-life.js?v=202610201113"></script>
+<script src="js/sims-matter.js?v=202610201113"></script>
+<script src="js/frise-data.js?v=202610201113"></script>
+<script src="js/frise.js?v=202610201113"></script>
+<script src="js/main.js?v=202610201113"></script>
 </body>
 </html>
