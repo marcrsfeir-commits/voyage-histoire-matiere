@@ -123,6 +123,23 @@
 
   const SHAPES = [galaxy, cell, dna, atom];
 
+  /* Light theme: glowing (additive) particles vanish on paper, so each colour is deepened into
+     an ink tone and very light colours become brass, like the site's palette. */
+  SHAPES.forEach((shape) => {
+    const out = new Float32Array(shape.col.length);
+    for (let i = 0; i < shape.col.length; i += 3) {
+      const [r, g, b] = [shape.col[i], shape.col[i + 1], shape.col[i + 2]];
+      const lum = 0.3 * r + 0.59 * g + 0.11 * b;
+      const c = lum > 0.85 ? [0.6, 0.43, 0.13] : [r, g, b].map((v) => Math.pow(v, 1.8) * 0.88);
+      out.set(c, i);
+    }
+    shape.colLight = out;
+  });
+  const isDark = () => {
+    const t = document.documentElement.getAttribute("data-theme");
+    return t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+  };
+
   /* ---------- scene ---------- */
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -143,6 +160,7 @@
     uTime: { value: 0 },
     uSize: { value: small ? 4.2 : 3.8 },
     uPR: { value: Math.min(window.devicePixelRatio || 1, 2) },
+    uLight: { value: 0 },
   };
   const material = new THREE.ShaderMaterial({
     uniforms,
@@ -167,12 +185,16 @@
         vAlpha = 0.75 + 0.25 * sin(uTime * 1.6 + aRand * 40.0);
       }`,
     fragmentShader: `
+      uniform float uLight;
       varying vec3 vColor; varying float vAlpha;
       void main() {
         float d = length(gl_PointCoord - 0.5);
         float core = smoothstep(0.5, 0.0, d);
-        float a = pow(core, 1.4) + 0.6 * pow(core, 6.0);
-        gl_FragColor = vec4(vColor * (1.0 + 0.6 * pow(core, 6.0)), min(1.0, a * vAlpha));
+        float glow = pow(core, 1.4) + 0.6 * pow(core, 6.0);
+        float ink = smoothstep(0.5, 0.25, d) * 0.9;          // light theme: crisp ink dots
+        float a = mix(glow, ink, uLight);
+        vec3 col = mix(vColor * (1.0 + 0.6 * pow(core, 6.0)), vColor, uLight);
+        gl_FragColor = vec4(col, min(1.0, a * vAlpha));
       }`,
   });
   const points = new THREE.Points(geo, material);
@@ -223,12 +245,24 @@
 
   /* ---------- morph sequence ---------- */
   let timer = 0, morphing = false;
+  let pair = [0, 0];
+  const colorsOf = (k) => (isDark() ? SHAPES[k].col : SHAPES[k].colLight);
   function setPair(from, to) {
+    pair = [from, to];
     geo.setAttribute("aFrom", attr(SHAPES[from].pos));
-    geo.setAttribute("cFrom", attr(SHAPES[from].col));
+    geo.setAttribute("cFrom", attr(colorsOf(from)));
     geo.setAttribute("aTo", attr(SHAPES[to].pos));
-    geo.setAttribute("cTo", attr(SHAPES[to].col));
+    geo.setAttribute("cTo", attr(colorsOf(to)));
   }
+  function applyTheme() {
+    const dark = isDark();
+    material.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
+    material.needsUpdate = true;
+    uniforms.uLight.value = dark ? 0 : 1;
+    setPair(pair[0], pair[1]);
+  }
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
+  new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   function goTo(k, user) {
     if (k === stage || morphing) return;
     clearTimeout(timer);
@@ -248,6 +282,7 @@
     timer = setTimeout(() => goTo((stage + 1) % STAGES.length), HOLD_MS);
   }
   setPair(0, 0);
+  applyTheme();
   label(0);
   schedule();
 
