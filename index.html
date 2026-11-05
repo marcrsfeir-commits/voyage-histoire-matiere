@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Young+Serif&display=swap">
-<link rel="stylesheet" href="css/style.css?v=202610201113">
+<link rel="stylesheet" href="css/style.css?v=202611050912">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fafbf9' stroke='%23142029' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23b8326a'/%3E%3C/svg%3E">
 <meta property="og:title" content="Voyage dans l'histoire de la matière">
 <meta property="og:description" content="Sept découvertes, de Hooke au Big Bang et à l'ISS : expériences, animations, vidéos et quiz.">
@@ -34,21 +34,35 @@
 </header>
 
 <main id="contenu">
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow reveal">Vous avez scanné la frise · bienvenue</p>
-        <h1 id="hero-title" class="reveal d1">Voyage dans l'histoire de la <em>matière</em></h1>
-        <p class="lead reveal d2">De la première fraction de seconde de l'Univers jusqu'aux atomes que l'on déplace un par un : sept grandes découvertes à explorer de plus près, avec des expériences, des animations et des vidéos.</p>
-        <div class="disciplines reveal d3" aria-label="Disciplines du projet">
+  <section class="hero hero-3d" id="top" aria-labelledby="hero-title">
+    <canvas id="hero-3d" aria-hidden="true"></canvas>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">Vous avez scanné la frise · bienvenue</p>
+        <h1 id="hero-title">Voyage dans l'histoire de la <em>matière</em></h1>
+        <p class="lead">De la première fraction de seconde de l'Univers jusqu'aux atomes que l'on déplace un par un : sept grandes découvertes à explorer de plus près, avec des expériences, des animations et des vidéos.</p>
+        <div class="hero-actions">
+          <a class="btn hero-btn" href="#frise">Commencer le voyage</a>
+          <a class="btn ghost hero-btn" href="#chapitres">Voir les chapitres</a>
+        </div>
+        <div class="disciplines" aria-label="Disciplines du projet">
           <span class="tag">SVT</span><span class="tag">Physique-Chimie</span><span class="tag">NSI</span><span class="tag">Arts</span>
         </div>
       </div>
-      <figure class="eyepiece" aria-label="Animation : le champ d'un microscope qui passe de l'Univers à la cellule puis à l'atome">
+      <aside class="hero-stage" aria-live="polite">
+        <p class="hs-kicker">Zoom dans la matière</p>
+        <p class="hs-name" id="hs-name">Une galaxie</p>
+        <p class="hs-scale" id="hs-scale">≈ 100 000 années-lumière</p>
+        <p class="hs-note" id="hs-note"></p>
+        <div class="hs-dots" id="hs-dots" role="group" aria-label="Changer d'échelle"></div>
+      </aside>
+      <figure class="eyepiece" hidden aria-label="Animation : le champ d'un microscope qui passe de l'Univers à la cellule puis à l'atome">
         <canvas id="hero-lens" width="880" height="880"></canvas>
         <figcaption id="hero-caption">·</figcaption>
       </figure>
     </div>
+    <a class="scroll-cue" href="#frise" aria-label="Descendre vers la frise"><span></span></a>
   </section>
 
   <section class="legend" aria-label="Comment lire ce site">
@@ -60,33 +74,14 @@
   </section>
 
   <!-- ============ TIMELINE ============ -->
-  <section class="section" id="frise" aria-labelledby="frise-title">
+  <section class="section frise-section" id="frise" aria-labelledby="frise-title">
     <div class="wrap">
       <div class="section-head">
         <h2 id="frise-title">Le fil du temps</h2>
-        <p>Seize étapes, du Big Bang à l'ISS. Cliquez sur un événement, ou faites glisser le long de la règle pour voyager dans le temps : les dates sont à l'échelle entre 1580 et 2025. Sur téléphone, touchez un événement pour l'ouvrir.</p>
-      </div>
-      <div class="frise" id="frise-app">
-        <div class="frise-bar">
-          <div class="chips" role="group" aria-label="Filtrer les événements">
-            <button type="button" class="chip" data-filter="all" aria-pressed="true">Tout</button>
-            <button type="button" class="chip tech" data-filter="tech" aria-pressed="false">Innovations techniques</button>
-            <button type="button" class="chip sci" data-filter="sci" aria-pressed="false">Découvertes scientifiques</button>
-            <button type="button" class="chip" data-filter="SVT" aria-pressed="false">SVT</button>
-            <button type="button" class="chip" data-filter="PC" aria-pressed="false">Physique-Chimie</button>
-          </div>
-          <div class="frise-nav">
-            <button type="button" class="nav-btn" id="frise-prev" aria-label="Événement précédent"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <button type="button" class="nav-btn play" id="frise-play" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" d="M8 5l11 7-11 7z"/><path class="i-pause" d="M8 5v14M16 5v14"/></svg><span>Visite guidée</span></button>
-            <button type="button" class="nav-btn" id="frise-next" aria-label="Événement suivant"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
-          </div>
-        </div>
-        <div class="frise-stage">
-          <div class="frise-track" id="frise-track" aria-label="Frise chronologique interactive. Flèches gauche et droite pour changer d'événement."></div>
-        </div>
-        <article class="frise-card" id="frise-card" aria-live="polite"></article>
+        <p>Vingt-trois étapes, du Big Bang à la Station spatiale. Faites défiler : la frise vous emmène à travers les époques. Touchez un point de la règle ou une époque pour y sauter directement.</p>
       </div>
     </div>
+    <div class="frise-cine" id="frise-app"></div>
   </section>
 
   <!-- ============ SCALE EXPLORER ============ -->
@@ -721,12 +716,17 @@
   </div>
 </footer>
 
-<script src="js/core.js?v=202610201113"></script>
-<script src="js/draw.js?v=202610201113"></script>
-<script src="js/sims-life.js?v=202610201113"></script>
-<script src="js/sims-matter.js?v=202610201113"></script>
-<script src="js/frise-data.js?v=202610201113"></script>
-<script src="js/frise.js?v=202610201113"></script>
-<script src="js/main.js?v=202610201113"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="js/core.js?v=202611050912"></script>
+<script src="js/draw.js?v=202611050912"></script>
+<script src="js/sims-life.js?v=202611050912"></script>
+<script src="js/sims-matter.js?v=202611050912"></script>
+<script src="js/frise-data.js?v=202611050912"></script>
+<script src="js/frise.js?v=202611050912"></script>
+<script src="js/main.js?v=202611050912"></script>
+<script src="js/hero3d.js?v=202611050912"></script>
+<script src="js/reveal.js?v=202611050912"></script>
 </body>
 </html>
