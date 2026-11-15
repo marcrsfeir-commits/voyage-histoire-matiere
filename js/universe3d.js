@@ -21,9 +21,11 @@
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const TOUR_MS = 7500;
   const INTRO_MS = 5200; // length of the Big Bang explosion (js/universe-bigbang.js)
+  const MIN_RESUME_MS = 1500; // after "Reprendre", stay at least this long on the current stage
   const OVERVIEW = { az: -0.14, el: 0.24 };
   let current = -1;
-  let tourTimer = 0;
+  /* guided tour: running, paused (resumable where it stopped) or off */
+  const tour = { on: false, paused: false, timer: 0, dueAt: 0, remaining: 0 };
   let touched = false; // the visitor has already used the model: no automatic intro
 
   function el(tag, cls, text) {
@@ -39,7 +41,7 @@
     const b = el("button", "u3d-step");
     b.type = "button";
     b.append(el("span", "u3d-step-n", String(i + 1)), el("span", "u3d-step-time", s.time), el("span", "u3d-step-name", s.name));
-    b.addEventListener("click", () => { stopTour(); select(i); });
+    b.addEventListener("click", () => { interruptTour(); select(i); });
     li.append(b);
     steps.append(li);
     return b;
@@ -66,8 +68,8 @@
     next.setAttribute("aria-label", "Étape suivante");
     prev.disabled = i === 0;
     next.disabled = i === STAGES.length - 1;
-    prev.addEventListener("click", () => { stopTour(); select(i - 1); });
-    next.addEventListener("click", () => { stopTour(); select(i + 1); });
+    prev.addEventListener("click", () => { interruptTour(); select(i - 1); });
+    next.addEventListener("click", () => { interruptTour(); select(i + 1); });
     nav.append(el("span", "u3d-count", `${i + 1} / ${STAGES.length}`), prev, next);
     info.append(
       el("p", "u3d-kicker", `Étape ${i + 1} · ${s.time}`),
@@ -100,7 +102,7 @@
       const b = el("button", null);
       b.type = "button";
       b.append(el("span", "mono", s.time), el("b", null, s.name));
-      b.addEventListener("click", () => { stopTour(); select(i); });
+      b.addEventListener("click", () => { interruptTour(); select(i); });
       const li = el("li");
       li.append(b);
       list.append(li);
@@ -168,7 +170,7 @@
       b.type = "button";
       b.tabIndex = -1; // the stage list below gives keyboard access
       b.append(el("span", "u3d-mk-n", String(i + 1)), el("span", "u3d-mk-label", s.name));
-      b.addEventListener("click", () => { stopTour(); select(i); });
+      b.addEventListener("click", () => { interruptTour(); select(i); });
       markers.append(b);
       return b;
     });
@@ -217,7 +219,7 @@
 
     /* drag to turn the model around its current target */
     let drag = null;
-    canvas.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, az: rig.az, el: rig.el }; canvas.setPointerCapture(e.pointerId); stopTour(); root.classList.add("u3d--dragged"); });
+    canvas.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, az: rig.az, el: rig.el }; canvas.setPointerCapture(e.pointerId); pauseTour(); root.classList.add("u3d--dragged"); });
     canvas.addEventListener("pointermove", (e) => {
       if (!drag) return;
       rig.az = drag.az - (e.clientX - drag.x) * 0.006;
@@ -298,35 +300,71 @@
     root.classList.remove("u3d--focused");
   }
 
-  function stopTour() {
-    if (!tourTimer) return;
-    clearTimeout(tourTimer);
-    tourTimer = 0;
-    playBtn.textContent = "▶ Lancer le voyage";
-    playBtn.setAttribute("aria-pressed", "false");
+  const PLAY_LABEL = { start: "▶ Lancer le voyage", running: "❚❚ Pause", paused: "▶ Reprendre" };
+  function setPlayButton(mode) {
+    playBtn.textContent = PLAY_LABEL[mode];
+    playBtn.setAttribute("aria-pressed", String(mode === "running"));
   }
 
-  function nextTourStep(delay) {
-    tourTimer = setTimeout(() => {
-      if (current >= STAGES.length - 1) { stopTour(); overview(); return; }
+  function scheduleNext(delay) {
+    clearTimeout(tour.timer);
+    tour.dueAt = performance.now() + delay;
+    tour.timer = setTimeout(() => {
+      tour.timer = 0;
+      if (current >= STAGES.length - 1) { endTour(); overview(); return; }
       select(current + 1);
-      nextTourStep(TOUR_MS);
+      scheduleNext(TOUR_MS);
     }, delay);
   }
 
   function startTour() {
+    tour.on = true;
+    tour.paused = false;
+    setPlayButton("running");
     select(0);
-    playBtn.textContent = "❚❚ Pause";
-    playBtn.setAttribute("aria-pressed", "true");
-    nextTourStep(TOUR_MS + (reduce ? 0 : INTRO_MS));
+    scheduleNext(TOUR_MS + (reduce ? 0 : INTRO_MS));
   }
 
-  playBtn.addEventListener("click", () => (tourTimer ? stopTour() : startTour()));
-  overviewBtn.addEventListener("click", () => { touched = true; stopTour(); overview(); });
+  /* Pause keeps the current stage and the time left on it, so "Reprendre" carries on from there. */
+  function pauseTour() {
+    if (!tour.on || tour.paused) return;
+    clearTimeout(tour.timer);
+    tour.timer = 0;
+    tour.remaining = Math.max(0, tour.dueAt - performance.now());
+    tour.paused = true;
+    setPlayButton("paused");
+  }
+
+  function resumeTour() {
+    if (current < 0) { startTour(); return; }
+    tour.paused = false;
+    setPlayButton("running");
+    scheduleNext(Math.max(tour.remaining, MIN_RESUME_MS));
+  }
+
+  /* The visitor picked a stage during the tour: pause, and give the new stage its full time on resume. */
+  function interruptTour() {
+    if (!tour.on) return;
+    pauseTour();
+    tour.remaining = TOUR_MS;
+  }
+
+  function endTour() {
+    clearTimeout(tour.timer);
+    Object.assign(tour, { on: false, paused: false, timer: 0, remaining: 0 });
+    setPlayButton("start");
+  }
+
+  playBtn.addEventListener("click", () => {
+    if (!tour.on) startTour();
+    else if (tour.paused) resumeTour();
+    else pauseTour();
+  });
+  overviewBtn.addEventListener("click", () => { touched = true; endTour(); overview(); });
   root.addEventListener("keydown", (e) => {
     if (e.target.closest("input, textarea")) return;
-    if (e.key === "ArrowRight" && current < STAGES.length - 1) { stopTour(); select(current + 1); }
-    if (e.key === "ArrowLeft" && current > 0) { stopTour(); select(current - 1); }
+    if (e.key === "ArrowRight" && current < STAGES.length - 1) { interruptTour(); select(current + 1); }
+    if (e.key === "ArrowLeft" && current > 0) { interruptTour(); select(current - 1); }
   });
 
   overview();
