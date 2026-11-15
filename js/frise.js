@@ -208,7 +208,8 @@
     });
     actions.append(nav);
     sheet.body.textContent = "";
-    sheet.body.append(meta, el("p", "frs-date", dateOf(ev)), title, el("p", "frs-who", ev.who), el("p", "frs-lead", ev.desc), el("p", "frs-more", ev.more), fact, actions);
+    const sources = window.VM.sourceLine ? window.VM.sourceLine(window.VM.sources.frise[String(ev.year)], "src-line frs-src") : "";
+    sheet.body.append(meta, el("p", "frs-date", dateOf(ev)), title, el("p", "frs-who", ev.who), el("p", "frs-lead", ev.desc), el("p", "frs-more", ev.more), fact, sources, actions);
     showSheet();
   }
 

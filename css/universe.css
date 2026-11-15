@@ -145,3 +145,4 @@
 .u3d--intro .u3d-markers, .u3d--intro .u3d-axis, .u3d--intro .u3d-hint, .u3d--intro .u3d-hud { opacity: 0; }
 .u3d--intro .u3d-mk { pointer-events: none; }
 .u3d-hud, .u3d-ctrls { z-index: 3; }
+.u3d-info .u3d-src { font-size: 0.74em; }

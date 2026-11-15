@@ -77,7 +77,9 @@
       stats,
       ...s.text.map((t) => el("p", "u3d-text", t)),
       el("p", "u3d-forms-title", "Ce qui apparaît"),
-      forms, fact, nav,
+      forms, fact,
+      window.VM.sourceLine ? window.VM.sourceLine(window.VM.sources.universe[i], "src-line u3d-src") : "",
+      nav,
     );
     fitInfo();
   }

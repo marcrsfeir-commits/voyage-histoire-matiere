@@ -602,3 +602,17 @@ details.sources a { overflow-wrap: anywhere; }
 
 /* safety net: animated elements never widen the page (clip keeps sticky elements working) */
 html, body { overflow-x: clip; }
+
+/* sources (js/sources.js): a line under each frise sheet and stage card, full list in the footer */
+.src-line { margin: 0; font-size: 0.8rem; line-height: 1.5; color: var(--muted); }
+.src-line .src-head { font: 700 0.72rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.src-line a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 2px; }
+.src-line a:hover { color: var(--ink); text-decoration-color: currentColor; }
+.credits .all-sources { grid-column: 1 / -1; display: grid; gap: 0.8rem; }
+.credits .all-sources h2 { margin-bottom: 0; }
+.all-sources-lead { margin: 0; font-size: var(--step--1); color: var(--muted); }
+#all-sources { display: grid; gap: 0.5rem; }
+.all-sources-group ul { margin-top: 0.6rem; }
+.all-sources-group li b { color: var(--ink); font-weight: 600; }
+.credits a { color: inherit; }
+details.sources.all-sources-group { margin-top: 0; padding-top: 0.8rem; }
