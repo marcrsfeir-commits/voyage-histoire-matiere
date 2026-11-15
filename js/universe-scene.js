@@ -153,7 +153,7 @@
 
   const VERTEX = `
     attribute float size; attribute float phase; attribute float kind; attribute vec3 color;
-    uniform float uTime; uniform float uPR; uniform float uScale; uniform float uLo; uniform float uHi; uniform float uFocus;
+    uniform float uTime; uniform float uPR; uniform float uScale; uniform float uLo; uniform float uHi; uniform float uFocus; uniform float uFade;
     varying vec3 vColor; varying float vAlpha;
     void main() {
       vec3 p = position;
@@ -162,7 +162,7 @@
       if (kind > 1.5 && kind < 2.5) s *= 0.75 + 0.35 * sin(uTime * 2.5 + phase * 60.0);
       if (kind > 2.5 && kind < 3.5) s *= 1.0 + 5.0 * pow(max(0.0, sin(uTime * 0.7 + phase * 90.0)), 30.0);
       float inside = smoothstep(uLo - 1.0, uLo + 0.2, position.x) * (1.0 - smoothstep(uHi - 0.2, uHi + 1.0, position.x));
-      vAlpha = kind > 3.5 ? 0.8 : mix(1.0, mix(0.18, 1.0, inside), uFocus);
+      vAlpha = kind > 3.5 ? 0.8 : mix(1.0, mix(0.18, 1.0, inside), uFocus) * uFade;
       vColor = color;
       vec4 mv = modelViewMatrix * vec4(p, 1.0);
       gl_PointSize = clamp(s * uScale * uPR * (420.0 / -mv.z), 0.0, (kind > 2.5 && kind < 3.5 ? 26.0 : 9.0) * uPR);
@@ -211,9 +211,10 @@
     }
   });
 
+  const CONE_OPACITY = 0.16;
   function coneLines() {
     const group = new THREE.Group();
-    const mat = new THREE.LineBasicMaterial({ color: 0x9fb8ff, transparent: true, opacity: 0.16, blending: THREE.AdditiveBlending, depthWrite: false });
+    const mat = new THREE.LineBasicMaterial({ color: 0x9fb8ff, transparent: true, opacity: CONE_OPACITY, blending: THREE.AdditiveBlending, depthWrite: false });
     for (let u = 0.5; u <= LENGTH; u += 1) {
       const pts = [];
       for (let k = 0; k <= 72; k++) {
@@ -261,7 +262,7 @@
     const group = new THREE.Group();
     const uniforms = {
       uTime: { value: 0 }, uPR: { value: 1 }, uScale: { value: small ? 2 : 1.6 },
-      uLo: { value: -99 }, uHi: { value: 99 }, uFocus: { value: 0 },
+      uLo: { value: -99 }, uHi: { value: 99 }, uFocus: { value: 0 }, uFade: { value: 1 },
     };
     const material = new THREE.ShaderMaterial({ uniforms, vertexShader: VERTEX, fragmentShader: FRAGMENT, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending });
 
@@ -291,7 +292,8 @@
     cmb.rotation.y = Math.PI / 2;
     group.add(cmb);
 
-    group.add(coneLines());
+    const cone = coneLines();
+    group.add(cone);
     const solar = solarSystem(glow);
     solar.position.copy(milkyWay);
     solar.userData.fade(0);
@@ -301,7 +303,16 @@
     addSky(sky, q);
     const skyPoints = new THREE.Points(sky.geometry(), material);
 
-    return { group, sky: skyPoints, uniforms, solar, milkyWay, bang, cmb, radius, HALF, LENGTH };
+    /* 0 = model hidden, 1 = fully visible (used by the Big Bang intro, js/universe-bigbang.js) */
+    function setFade(f) {
+      uniforms.uFade.value = f;
+      cmb.material.opacity = 0.85 * f;
+      bang.material.opacity = f;
+      heat.material.opacity = 0.35 * f;
+      cone.children[0].material.opacity = CONE_OPACITY * f;
+    }
+
+    return { group, sky: skyPoints, uniforms, solar, milkyWay, bang, cmb, setFade, glow, radius, HALF, LENGTH };
   }
 
   window.VM.universeScene = { build, radius, HALF, LENGTH };

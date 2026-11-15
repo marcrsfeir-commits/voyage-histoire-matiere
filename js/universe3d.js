@@ -20,9 +20,11 @@
   const overviewBtn = $(".u3d-overview");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const TOUR_MS = 7500;
+  const INTRO_MS = 5200; // length of the Big Bang explosion (js/universe-bigbang.js)
   const OVERVIEW = { az: -0.14, el: 0.24 };
   let current = -1;
   let tourTimer = 0;
+  let touched = false; // the visitor has already used the model: no automatic intro
 
   function el(tag, cls, text) {
     const n = document.createElement(tag);
@@ -130,6 +132,7 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x04070b);
     scene.add(world.group, world.sky);
+    const bang = window.VM.universeBang && window.gsap ? window.VM.universeBang.create({ scene, world, view, small }) : null;
     const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 600);
     const rig = { tx: 0, ty: 0, tz: 0, r: 46, az: OVERVIEW.az, el: OVERVIEW.el, lo: -99, hi: 99, focus: 0, solar: 0 };
     const state = { visible: false, spin: !reduce, t0: performance.now(), time: 0, last: performance.now(), raf: 0 };
@@ -149,7 +152,8 @@
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       world.uniforms.uPR.value = pr;
-      if (current < 0) rig.r = overviewDistance();
+      if (bang) bang.setPR(pr);
+      if (current < 0 && !(bang && bang.playing)) rig.r = overviewDistance();
     }
 
     function placeCamera() {
@@ -196,7 +200,7 @@
       world.uniforms.uLo.value = rig.lo;
       world.uniforms.uHi.value = rig.hi;
       world.uniforms.uFocus.value = rig.focus;
-      if (state.spin && current < 0) world.group.rotation.x += dt * 0.08;
+      if (state.spin && current < 0 && !(bang && bang.playing)) world.group.rotation.x += dt * 0.08;
       world.bang.scale.setScalar(1.4 + (reduce ? 0 : 0.25 * Math.sin(state.time * 3)));
       world.solar.userData.tick(state.time);
       world.solar.userData.fade(rig.solar);
@@ -223,33 +227,64 @@
     canvas.addEventListener("pointerup", endDrag);
     canvas.addEventListener("pointercancel", endDrag);
 
+    function cancelIntro() {
+      if (!bang || !bang.playing) return;
+      bang.cancel();
+      root.classList.remove("u3d--intro");
+    }
+    function intro(after) {
+      if (reduce || !bang) { after(); return; }
+      root.classList.add("u3d--intro");
+      bang.play(rig, () => { root.classList.remove("u3d--intro"); after(); });
+    }
+
+    /* the first time the model comes into view, the Universe is born in front of the visitor */
+    new IntersectionObserver((entries, obs) => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      if (!touched && current < 0) intro(() => { if (current < 0) flyOverview(); });
+    }, { threshold: 0.55 }).observe(view);
+
+    function flyOverview() {
+      flyTo({ tx: 0, ty: 0, tz: 0, r: overviewDistance(), az: OVERVIEW.az, el: OVERVIEW.el, lo: -99, hi: 99, focus: 0, solar: 0 }, reduce ? 0 : 1.6);
+    }
+
     function flyTo(target, dur) {
       if (window.gsap && dur > 0) gsap.to(rig, { ...target, duration: dur, ease: "power3.inOut", overwrite: true });
       else Object.assign(rig, target);
     }
 
     return {
+      intro,
       focus(i) {
+        cancelIntro();
         const s = STAGES[i];
         const t = s.solar ? world.group.localToWorld(world.milkyWay.clone()) : new THREE.Vector3(s.u - world.HALF, 0, 0);
         flyTo({ tx: t.x, ty: t.y, tz: t.z, r: s.view.r, az: s.view.az, el: s.view.el, lo: s.span[0] - world.HALF, hi: s.span[1] - world.HALF, focus: 1, solar: s.solar ? 1 : 0 }, reduce ? 0 : 1.8);
       },
       overview() {
-        flyTo({ tx: 0, ty: 0, tz: 0, r: overviewDistance(), az: OVERVIEW.az, el: OVERVIEW.el, lo: -99, hi: 99, focus: 0, solar: 0 }, reduce ? 0 : 1.6);
+        cancelIntro();
+        flyOverview();
       },
       markActive(i) { markerButtons.forEach((b, k) => b.classList.toggle("is-on", k === i)); },
     };
   }
 
   /* ---------- navigation ---------- */
-  function select(i) {
+  /* Selecting the first stage (Le Big Bang) plays the explosion before zooming on it. */
+  function select(i, { intro = true } = {}) {
+    touched = true;
     current = i;
     stepButtons.forEach((b, k) => { b.classList.toggle("is-on", k === i); b.setAttribute("aria-pressed", String(k === i)); });
     stepButtons[i].scrollIntoView({ block: "nearest", inline: "center", behavior: reduce ? "auto" : "smooth" });
     hudTime.textContent = STAGES[i].time;
     hudName.textContent = STAGES[i].name;
     renderInfo(i);
-    if (three) { three.focus(i); three.markActive(i); }
+    if (three) {
+      three.markActive(i);
+      if (i === 0 && intro) three.intro(() => { if (current === 0) three.focus(0); });
+      else three.focus(i);
+    }
     root.classList.add("u3d--focused");
   }
 
@@ -265,24 +300,29 @@
 
   function stopTour() {
     if (!tourTimer) return;
-    clearInterval(tourTimer);
+    clearTimeout(tourTimer);
     tourTimer = 0;
     playBtn.textContent = "▶ Lancer le voyage";
     playBtn.setAttribute("aria-pressed", "false");
+  }
+
+  function nextTourStep(delay) {
+    tourTimer = setTimeout(() => {
+      if (current >= STAGES.length - 1) { stopTour(); overview(); return; }
+      select(current + 1);
+      nextTourStep(TOUR_MS);
+    }, delay);
   }
 
   function startTour() {
     select(0);
     playBtn.textContent = "❚❚ Pause";
     playBtn.setAttribute("aria-pressed", "true");
-    tourTimer = setInterval(() => {
-      if (current >= STAGES.length - 1) { stopTour(); overview(); return; }
-      select(current + 1);
-    }, TOUR_MS);
+    nextTourStep(TOUR_MS + (reduce ? 0 : INTRO_MS));
   }
 
   playBtn.addEventListener("click", () => (tourTimer ? stopTour() : startTour()));
-  overviewBtn.addEventListener("click", () => { stopTour(); overview(); });
+  overviewBtn.addEventListener("click", () => { touched = true; stopTour(); overview(); });
   root.addEventListener("keydown", (e) => {
     if (e.target.closest("input, textarea")) return;
     if (e.key === "ArrowRight" && current < STAGES.length - 1) { stopTour(); select(current + 1); }
