@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Presentation guide · Voyage dans la matière</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Young+Serif&display=swap">
+<style>
+  :root {
+    --bg: #eef1ee; --paper: #fafbf9; --ink: #142029; --muted: #56636b; --rule: #cdd5d1;
+    --blue: #2b57b5; --pink: #b8326a; --brass: #9a6f22;
+    --font-display: "Young Serif", Georgia, serif; --font-body: "Lexend", system-ui, sans-serif; --font-mono: "JetBrains Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1216; --paper: #121c22; --ink: #e4ebe8; --muted: #93a1a8; --rule: #25333b; --blue: #88a9f2; --pink: #f182ad; --brass: #d7ae62; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.6 var(--font-body); }
+  main { max-width: 46rem; margin: 0 auto; padding: 2rem 16px 4rem; }
+  header { padding-bottom: 1.2rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.5rem; }
+  .eyebrow { font: 700 0.75rem var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink); margin: 0; }
+  h1 { font: 2.2rem/1.1 var(--font-display); margin: 0.4rem 0 0.6rem; }
+  h2 { font: 1.45rem/1.2 var(--font-display); margin: 0 0 0.6rem; }
+  h3 { font: 600 1.02rem/1.3 var(--font-body); margin: 1.1rem 0 0.3rem; }
+  p { margin: 0.5rem 0; }
+  ul, ol { margin: 0.4rem 0; padding-left: 1.25rem; }
+  li { margin: 0.25rem 0; }
+  section { background: var(--paper); border: 1px solid var(--rule); border-radius: 18px; padding: 1.2rem 1.3rem; margin: 1rem 0; }
+  .go {
+    float: right; margin: 0 0 0.6rem 1rem; font: 600 0.8rem var(--font-body); color: var(--paper); background: var(--ink);
+    text-decoration: none; padding: 0.45rem 0.9rem; border-radius: 99px; transition: background 200ms;
+  }
+  .go:hover, .go:focus-visible { background: var(--pink); }
+  .go:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+  .lead { color: var(--muted); }
+  .tag { display: inline-block; font: 700 0.7rem var(--font-mono); padding: 0.1rem 0.5rem; border-radius: 99px; color: #fff; }
+  .tech { background: var(--blue); } .sci { background: var(--pink); } .origin { background: var(--brass); }
+  .say { margin-top: 0.8rem; padding: 0.7rem 0.9rem; border-left: 4px solid var(--brass); background: color-mix(in srgb, var(--brass) 10%, transparent); border-radius: 8px; }
+  .say b { color: var(--brass); }
+  code { font-family: var(--font-mono); font-size: 0.88em; }
+  nav.toc { columns: 2; column-gap: 1.5rem; font-size: 0.92rem; }
+  nav.toc a { color: inherit; }
+  @media (max-width: 560px) { nav.toc { columns: 1; } .go { float: none; display: inline-block; margin: 0 0 0.6rem; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Presentation guide · private notes</p>
+    <h1>Voyage dans l'histoire de la matière</h1>
+    <p class="lead">Read this next to the website. Each “Voir sur le site” button opens that part of the site in a second tab (always the same one), so you can keep both side by side.</p>
+    <nav class="toc" aria-label="Contents">
+      <ol>
+        <li><a href="#idea">The big idea</a></li>
+        <li><a href="#hero">Hero (top of the page)</a></li>
+        <li><a href="#frise">The interactive frise</a></li>
+        <li><a href="#scale">The scale slider</a></li>
+        <li><a href="#ch1">Ch. 1 · Hooke &amp; Leeuwenhoek</a></li>
+        <li><a href="#ch2">Ch. 2 · Cell theory</a></li>
+        <li><a href="#ch3">Ch. 3 · Radioactivity</a></li>
+        <li><a href="#ch4">Ch. 4 · The nucleus</a></li>
+        <li><a href="#ch5">Ch. 5 · The Big Bang</a></li>
+        <li><a href="#u3d">The 3D model of the Universe</a></li>
+        <li><a href="#ch6">Ch. 6 · Seeing atoms</a></li>
+        <li><a href="#ch7">Ch. 7 · Matter in space</a></li>
+        <li><a href="#quiz">Quiz &amp; sources</a></li>
+        <li><a href="#tech">How it was made (NSI)</a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <section id="idea">
+    <a class="go" href="./#top" target="site">Voir sur le site →</a>
+    <h2>1 · The big idea</h2>
+    <p>The website goes with the paper frise: the <b>frise gives the dates</b>, the <b>site goes deeper</b> with experiments, animations, videos and sources. It's an interdisciplinary project: SVT, Physique-Chimie, NSI and Arts.</p>
+    <p>Everything uses the same colour code as the frise:</p>
+    <ul>
+      <li><span class="tag tech">bleu</span> <b>Innovation technique</b>: a new tool (microscope, bio-printer…)</li>
+      <li><span class="tag sci">rose</span> <b>Découverte scientifique</b>: a new idea about nature (the cell, the nucleus, the expanding Universe…)</li>
+      <li><span class="tag origin">or</span> <b>Origine de la matière</b>: the Big Bang</li>
+    </ul>
+    <p>The QR code on the paper frise opens the site, which is why the top says “Vous avez scanné la frise · bienvenue”.</p>
+  </section>
+
+  <section id="hero">
+    <a class="go" href="./#top" target="site">Voir sur le site →</a>
+    <h2>2 · Hero (top of the page)</h2>
+    <p>A 3D cloud of particles morphs: <b>a galaxy → a cell → DNA → an atom</b>, each with its real size (from about 100,000 light-years down to a fraction of a nanometre). It's a “zoom into matter”, from the biggest scale to the smallest.</p>
+  </section>
+
+  <section id="frise">
+    <a class="go" href="./#frise" target="site">Voir sur le site →</a>
+    <h2>3 · « Le fil du temps »: the interactive frise</h2>
+    <p>The same <b>23 events</b> as the paper frise, grouped into <b>5 eras</b>:</p>
+    <ol>
+      <li><b>Les origines</b>: Big Bang, Démocrite</li>
+      <li><b>Les premiers microscopes</b> (1590–1674): Janssen, Hooke, Leeuwenhoek</li>
+      <li><b>Atomes, éléments, cellules</b> (1789–1869): Lavoisier, Dalton, Brown, Schleiden &amp; Schwann, Virchow, Mendeleïev</li>
+      <li><b>Le noyau et l'Univers</b> (1896–1931): Becquerel, Thomson, the Curies, Rutherford, Lemaître, Hubble, Ruska</li>
+      <li><b>Voir les atomes, aller dans l'espace</b> (1953–2023): Franklin (DNA), Penzias &amp; Wilson, the scanning tunnelling microscope, Pesquet, Al Neyadi</li>
+    </ol>
+    <p><b>How it works:</b> on a laptop, scrolling down (or swiping sideways on the trackpad) moves through time horizontally; on a phone it becomes a vertical story. <b>Click any card, dot or era</b> to open a fact sheet: photos, a longer explanation, a “Le saviez-vous ?”, its <b>sources</b> and a link to the chapter.</p>
+  </section>
+
+  <section id="scale">
+    <a class="go" href="./#echelles" target="site">Voir sur le site →</a>
+    <h2>4 · « Changer d'échelle »: the scale slider</h2>
+    <p>Drag from an ant (5 mm) down to an atom; the site shows which instrument can see each size (naked eye → optical microscope → electron microscope → tunnelling microscope).</p>
+    <p class="say"><b>Key idea to say:</b> we only discover what we can see, so the history of matter is a history of instruments.</p>
+  </section>
+
+  <section id="ch1">
+    <a class="go" href="./#hooke" target="site">Voir sur le site →</a>
+    <h2>5 · Chapter 1 · Les premiers regards dans l'invisible</h2>
+    <p><b>Hooke (1665)</b> looks at cork with a microscope, sees little boxes and names them “cellules” (Latin <i>cella</i>, small room). <b>Leeuwenhoek (1674)</b>, with a single-lens microscope (~270×), is the first to see bacteria and micro-organisms, his “animalcules”.</p>
+    <p><b>Experiment:</b> redo Hooke's cork observation. <b>Animation:</b> a drop of pond water, what Leeuwenhoek saw.</p>
+    <p class="lead">Every chapter has the same structure: L'essentiel → key fact → experiment → photos → animation → videos → sources.</p>
+  </section>
+
+  <section id="ch2">
+    <a class="go" href="./#cellule" target="site">Voir sur le site →</a>
+    <h2>6 · Chapter 2 · Tous les êtres vivants sont faits de cellules</h2>
+    <p><b>Brown (1831)</b> finds the cell nucleus. <b>Schleiden</b> (plants, 1838) and <b>Schwann</b> (animals, 1839): all living things are made of cells, the <b>cell theory</b>. <b>Virchow (1855)</b>: <i>« Omnis cellula e cellula »</i>, every cell comes from another cell.</p>
+    <p><b>Animation:</b> one cell dividing into two.</p>
+  </section>
+
+  <section id="ch3">
+    <a class="go" href="./#radioactivite" target="site">Voir sur le site →</a>
+    <h2>7 · Chapter 3 · La radioactivité</h2>
+    <p><b>Becquerel (1896)</b>: uranium salts darken a photographic plate wrapped in black paper, so uranium gives off invisible radiation. <b>Marie &amp; Pierre Curie (1898)</b> discover polonium and radium. Marie Curie is the only person with Nobel prizes in two different sciences (physics 1903, chemistry 1911).</p>
+    <p><b>Simulation:</b> 100 radium nuclei. You can't predict when one nucleus will decay, but half of them always decay in the same time: the <b>half-life</b>. That's “le hasard qui devient une loi” (chance becomes a law).</p>
+  </section>
+
+  <section id="ch4">
+    <a class="go" href="./#atome" target="site">Voir sur le site →</a>
+    <h2>8 · Chapter 4 · Au cœur de l'atome : le noyau</h2>
+    <p><b>Rutherford (1909–1911)</b> fires alpha particles at a very thin gold foil. Almost all go through, but a few bounce back, so the atom is <b>mostly empty</b> with a tiny positive <b>nucleus</b>, about 100,000 times smaller than the atom.</p>
+    <p><b>Simulation:</b> compare Thomson's “plum pudding” model (no bounce-backs) with Rutherford's model (a few bounce back).</p>
+  </section>
+
+  <section id="ch5">
+    <a class="go" href="./#big-bang" target="site">Voir sur le site →</a>
+    <h2>9 · Chapter 5 · Le Big Bang</h2>
+    <p><b>Lemaître (1927)</b> shows the Universe is expanding; <b>Hubble (1929)</b> sees galaxies moving away. Going back in time, the Universe was hot and dense. Hydrogen and helium formed in the first minutes; heavier elements (carbon, oxygen, iron) were made later <b>inside stars</b>. Age of the Universe: <b>13.8 billion years</b>. Its “fossil light” (cosmic microwave background) was found by chance by <b>Penzias &amp; Wilson in 1965</b>.</p>
+    <p><b>Experiment:</b> the inflating balloon: dots all move apart, and no dot is the centre.</p>
+  </section>
+
+  <section id="u3d">
+    <a class="go" href="./#univers-3d" target="site">Voir sur le site →</a>
+    <h2>10 · The 3D model of the Universe</h2>
+    <p>The Universe as a “trumpet”: <b>time goes left → right, the width is the size of the Universe</b>. It opens with a <b>Big Bang explosion</b> animation; the caption explains it's an artistic picture, since the Big Bang is not an explosion in space but space itself starting to grow.</p>
+    <ol>
+      <li><b>Le Big Bang</b>: hot, dense state, 13.8 billion years ago</li>
+      <li><b>L'inflation</b>: a sudden, enormous growth in a fraction of a second</li>
+      <li><b>La soupe de particules</b>: quarks join into protons and neutrons</li>
+      <li><b>Les premiers noyaux</b> (3–20 min): ~75 % hydrogen, ~25 % helium</li>
+      <li><b>Les premiers atomes</b> (380,000 years): the Universe becomes transparent; the coloured disk is the fossil light</li>
+      <li><b>Les âges sombres</b>: no stars yet; gas gathers into filaments (the cosmic web); dark matter</li>
+      <li><b>Les premières étoiles</b>: they make carbon, oxygen, iron, then explode as supernovas</li>
+      <li><b>Les galaxies</b>: stars group into galaxies; the Milky Way forms</li>
+      <li><b>Le Système solaire</b> (4.6 billion years ago): we are made of star dust</li>
+      <li><b>Aujourd'hui</b>: the expansion is accelerating (dark energy); ordinary matter is only ~5 % of the Universe</li>
+    </ol>
+    <p><b>Controls:</b> drag to rotate, click a stage, or press <b>“Lancer le voyage”</b> for a guided tour (Pause / Reprendre continues where it stopped).</p>
+  </section>
+
+  <section id="ch6">
+    <a class="go" href="./#voir-atomes" target="site">Voir sur le site →</a>
+    <h2>11 · Chapter 6 · Voir jusqu'aux atomes</h2>
+    <p>Light can't show details smaller than ~0.2 µm. The <b>electron microscope</b> (Ruska &amp; Knoll, 1931) uses electrons instead of light, so viruses become visible. The <b>scanning tunnelling microscope</b> (Binnig &amp; Rohrer, 1981) follows a surface atom by atom with an ultra-fine tip, so atoms become visible. Nobel Prize 1986; in 1989 IBM wrote “IBM” with 35 xenon atoms.</p>
+    <p><b>Animation:</b> the tip “reading atoms like braille”.</p>
+  </section>
+
+  <section id="ch7">
+    <a class="go" href="./#espace" target="site">Voir sur le site →</a>
+    <h2>12 · Chapter 7 · La matière en apesanteur</h2>
+    <p><b>Thomas Pesquet (2017)</b>: in the ISS, crystals of an anti-cancer drug grow more regular, because there's no sedimentation or convection without gravity. <b>Sultan Al Neyadi (2023)</b>: a 3D bio-printer prints a human meniscus (knee cartilage) in space, where soft tissue doesn't collapse under its own weight.</p>
+    <p><b>Animation:</b> crystals growing on Earth vs. in the ISS.</p>
+    <p class="say"><b>Key idea to say:</b> this chapter links the three subjects: chemistry (crystals), biology (cells) and computing (3D printing).</p>
+  </section>
+
+  <section id="quiz">
+    <a class="go" href="./#quiz" target="site">Voir sur le site →</a>
+    <h2>13 · Quiz &amp; sources</h2>
+    <p><b>Quiz:</b> 8 questions on the 7 chapters, every answer explained.</p>
+    <p><b>Sources:</b> each chapter ends with its sources; each frise sheet and each 3D stage has a “Sources” line; the bottom of the page has <b>“Toutes les sources”</b> with everything.</p>
+    <ul>
+      <li><b>Wikipédia</b> (French): each scientist and each idea</li>
+      <li><b>Fondation Nobel</b>: prizes of 1903, 1906, 1908, 1911, 1962, 1978, 1986</li>
+      <li><b>NASA</b> (WMAP, dark energy) and <b>ESA</b> (Planck: age and composition of the Universe)</li>
+      <li>Original texts and articles: Hooke's <i>Micrographia</i>, Eigler &amp; Schweizer (<i>Nature</i>, 1990), Reichert et al. (<i>npj Microgravity</i>, 2019)</li>
+      <li>ISS National Lab (Merck) and Redwire (the 3D-printed meniscus)</li>
+      <li>Your SVT textbook and the course activities</li>
+    </ul>
+  </section>
+
+  <section id="tech">
+    <a class="go" href="./#sources" target="site">Voir sur le site →</a>
+    <h2>14 · If you're asked how it was made (NSI)</h2>
+    <ul>
+      <li>Written in <b>HTML, CSS and JavaScript</b>, hosted for free on <b>GitHub Pages</b>.</li>
+      <li>2D animations are drawn live in <code>&lt;canvas&gt;</code> elements.</li>
+      <li>3D (hero and Universe model): <b>Three.js</b>, a library for WebGL 3D graphics in the browser.</li>
+      <li>Scroll animations: <b>GSAP / ScrollTrigger</b>.</li>
+      <li>Adapts to phones, has a dark mode; the QR code on the frise points to the site's address.</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>
