@@ -75,7 +75,21 @@
       el("p", "u3d-forms-title", "Ce qui apparaît"),
       forms, fact, nav,
     );
+    fitInfo();
   }
+
+  /* Shrinks the card's text step by step until everything fits without scrolling (desktop,
+     where the card is as tall as the 3D view). On phones the card simply grows. */
+  const MIN_FONT = 0.72;
+  function fitInfo() {
+    info.style.setProperty("--u3d-fs", "1");
+    if (!matchMedia("(min-width: 901px)").matches) return;
+    for (let f = 1; f > MIN_FONT && info.scrollHeight > info.clientHeight + 1; f -= 0.03) {
+      info.style.setProperty("--u3d-fs", f.toFixed(2));
+    }
+  }
+  new ResizeObserver(() => fitInfo()).observe(view);
+  if (document.fonts) document.fonts.ready.then(fitInfo);
 
   function renderOverview() {
     info.replaceChildren();
@@ -95,6 +109,7 @@
       el("p", "u3d-text", "Le temps s'écoule de gauche à droite. La largeur du modèle représente la taille de l'Univers : minuscule au Big Bang, il ne cesse de grandir. Choisissez une étape pour zoomer dessus."),
       list,
     );
+    fitInfo();
   }
 
   /* ---------- 3D ---------- */

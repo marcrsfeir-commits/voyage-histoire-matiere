@@ -58,41 +58,44 @@
 .u3d-hint { position: absolute; left: 20px; bottom: 40px; margin: 0; font: 11px var(--font-mono); color: rgba(255, 255, 255, 0.5); pointer-events: none; transition: opacity 400ms; }
 .u3d--dragged .u3d-hint, .u3d--focused .u3d-hint { opacity: 0; }
 
-/* description card */
+/* description card: sizes are in em so universe3d.js can shrink the whole card (--u3d-fs)
+   until it fits beside the 3D view without scrolling */
 .u3d-info {
-  display: flex; flex-direction: column; gap: 0.8rem; padding: clamp(1.2rem, 1rem + 1vw, 2rem);
-  background: var(--paper); border: 1px solid var(--rule); border-top: 6px solid var(--pink); border-radius: 24px;
+  --u3d-fs: 1;
+  font-size: calc(0.92rem * var(--u3d-fs));
+  display: flex; flex-direction: column; gap: 0.55em; padding: 1.15em 1.3em 1em;
+  background: var(--paper); border: 1px solid var(--rule); border-top: 5px solid var(--pink); border-radius: 22px;
   overflow-y: auto; max-height: 100%; min-height: 0;
 }
 .u3d-stage > .u3d-info { max-height: none; }
 @media (min-width: 901px) { .u3d-stage > .u3d-info { height: 0; min-height: 100%; } }
-.u3d-kicker { margin: 0; font: 700 0.78rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--pink); }
-.u3d-name { margin: 0; font: var(--step-2)/1.05 var(--font-display); }
-.u3d-stats { margin: 0.2rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-.u3d-stats div { padding: 0.65rem 0.8rem; border-radius: 12px; background: var(--bg); }
-.u3d-stats dt { font: 700 0.68rem var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.u3d-stats dd { margin: 0.2rem 0 0; font-weight: 600; font-size: 0.95rem; }
-.u3d-text { margin: 0; line-height: 1.55; }
-.u3d-forms-title { margin: 0.2rem 0 0; font: 700 0.7rem var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-.u3d-forms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.u3d-forms li { padding: 0.3rem 0.7rem; border-radius: 99px; font-size: 0.82rem; font-weight: 600; background: var(--blue-soft); color: var(--blue); }
-.u3d-fact { margin: 0; padding: 0.8rem 1rem; border-radius: 12px; background: var(--pink-soft); border-left: 4px solid var(--pink); font-size: 0.92rem; line-height: 1.5; }
+.u3d-kicker { margin: 0; font: 700 0.76em var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--pink); }
+.u3d-name { margin: 0; font: 1.75em/1.05 var(--font-display); }
+.u3d-stats { margin: 0.1em 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.45em; }
+.u3d-stats div { padding: 0.45em 0.65em; border-radius: 10px; background: var(--bg); }
+.u3d-stats dt { font: 700 0.68em var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.u3d-stats dd { margin: 0.1em 0 0; font-weight: 600; font-size: 0.9em; line-height: 1.25; }
+.u3d-text { margin: 0; line-height: 1.45; }
+.u3d-forms-title { margin: 0.1em 0 0; font: 700 0.68em var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.u3d-forms { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3em; }
+.u3d-forms li { padding: 0.2em 0.6em; border-radius: 99px; font-size: 0.82em; font-weight: 600; background: var(--blue-soft); color: var(--blue); }
+.u3d-fact { margin: 0; padding: 0.55em 0.8em; border-radius: 10px; background: var(--pink-soft); border-left: 3px solid var(--pink); font-size: 0.88em; line-height: 1.4; }
 .u3d-fact b { color: var(--pink); }
-.u3d-nav { margin-top: auto; display: flex; align-items: center; gap: 0.5rem; padding-top: 0.4rem; }
-.u3d-count { margin-right: auto; font: 700 0.78rem var(--font-mono); color: var(--muted); }
+.u3d-nav { margin-top: auto; display: flex; align-items: center; gap: 0.45em; padding-top: 0.2em; }
+.u3d-count { margin-right: auto; font: 700 0.76em var(--font-mono); color: var(--muted); }
 .u3d-arrow {
-  width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
-  font-size: 1.3rem; line-height: 1; cursor: pointer; transition: background 200ms, color 200ms, transform 200ms var(--ease);
+  width: 2.4em; height: 2.4em; border-radius: 50%; border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+  font-size: 1.15em; line-height: 1; cursor: pointer; transition: background 200ms, color 200ms, transform 200ms var(--ease);
 }
 .u3d-arrow:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
 .u3d-arrow:disabled { opacity: 0.3; cursor: default; }
-.u3d-mini { list-style: none; margin: 0.2rem 0 0; padding: 0; display: grid; gap: 0.3rem; }
+.u3d-mini { list-style: none; margin: 0.1em 0 0; padding: 0; display: grid; gap: 0.1em; }
 .u3d-mini button {
-  width: 100%; display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 0.6rem; align-items: baseline; text-align: left;
-  padding: 0.45rem 0.6rem; border: 0; border-radius: 10px; background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: 0.88rem;
+  width: 100%; display: grid; grid-template-columns: 9em minmax(0, 1fr); gap: 0.6em; align-items: baseline; text-align: left;
+  padding: 0.3em 0.5em; border: 0; border-radius: 8px; background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: 0.9em;
 }
 .u3d-mini button:hover { background: var(--bg); }
-.u3d-mini .mono { font-size: 0.72rem; color: var(--muted); }
+.u3d-mini .mono { font-size: 0.78em; color: var(--muted); }
 
 /* timeline of the 10 stages */
 .u3d-steps {
