@@ -195,11 +195,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .cp { --c: var(--pink); position: relative; flex: none; width: clamp(330px, 28vw, 450px); display: grid; gap: 1.1rem; border-radius: 26px; padding: 0.6rem; margin: -0.6rem; }
 .cp.tech { --c: var(--blue); } .cp.origin { --c: var(--brass); }
-.cp-ghost {
-  position: absolute; z-index: -1; top: -2.4rem; left: -1.5rem; white-space: nowrap; pointer-events: none;
-  font-family: var(--font-display); font-size: clamp(5rem, 2rem + 6vw, 9.5rem); line-height: 1;
-  color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--c) 30%, transparent);
-}
+.cp-ghost { display: none; } /* the big outlined years overlapped the cards and the ruler; each card already shows its date */
 .cp-media {
   margin: 0; display: grid; gap: 10px; padding: 12px; aspect-ratio: 4 / 3.3; border-radius: 22px; background: var(--paper);
   border: 1px solid var(--rule); border-top: 6px solid var(--c);
@@ -245,7 +241,6 @@ a.cp-go::after { content: "→"; }
 .cine.is-story .cine-ruler { display: none; }
 .cine.is-story .cine-track { display: grid; width: auto; height: auto; gap: 3.2rem; padding: 2.5rem var(--gutter) 4rem; justify-items: center; }
 .cine.is-story .cp, .cine.is-story .cp-intro, .cine.is-story .cp-era { width: min(100%, 560px); }
-.cine.is-story .cp-ghost { font-size: 5.5rem; top: -3rem; left: -0.5rem; }
 .cine.is-story .cp-intro-hint::after { content: "↓"; }
 
 /* ---------- info sheet ---------- */
