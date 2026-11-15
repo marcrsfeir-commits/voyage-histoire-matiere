@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&family=JetBrains+Mono:wght@400;700&family=Young+Serif&display=swap">
 <link rel="stylesheet" href="css/style.css?v=202611050535">
+<link rel="stylesheet" href="css/universe.css?v=202611151030">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23fafbf9' stroke='%23142029' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23b8326a'/%3E%3C/svg%3E">
 <meta property="og:title" content="Voyage dans l'histoire de la matière">
 <meta property="og:description" content="Sept découvertes, de Hooke au Big Bang et à l'ISS : expériences, animations, vidéos et quiz.">
@@ -488,19 +489,28 @@
         </div>
       </div>
 
-      <div class="bench">
-        <div class="bench-view"><canvas id="sim-cosmos" class="round" width="760" height="760" aria-label="Animation : l'Univers qui grandit et se refroidit depuis le Big Bang"></canvas></div>
-        <div class="bench-text">
-          <p class="eyebrow">Animation · 13,8 milliards d'années en un curseur</p>
-          <h3 id="cosmos-title">Le Big Bang</h3>
-          <p id="cosmos-text"></p>
-          <div class="slider-row">
-            <label for="cosmos-range"><span>Big Bang</span><span>Âge de l'Univers</span><span>Aujourd'hui</span></label>
-            <input type="range" id="cosmos-range" min="0" max="5" step="0.01" value="0">
+      <section class="u3d" id="univers-3d" aria-labelledby="u3d-title">
+        <header class="u3d-head">
+          <p class="eyebrow">Modèle 3D interactif · du Big Bang à aujourd'hui</p>
+          <h3 id="u3d-title">L'histoire de l'Univers en 10 étapes</h3>
+          <p class="u3d-lead">Le temps s'écoule de gauche à droite, et la largeur du modèle montre la taille de l'Univers. Choisissez une étape pour zoomer dessus, faites glisser pour tourner le modèle, ou lancez le voyage complet.</p>
+        </header>
+        <div class="u3d-stage">
+          <div class="u3d-view">
+            <canvas id="u3d-canvas" role="img" aria-label="Modèle 3D de l'histoire de l'Univers, du Big Bang à aujourd'hui"></canvas>
+            <div class="u3d-markers"></div>
+            <div class="u3d-hud" aria-live="polite"><span class="u3d-hud-time"></span><span class="u3d-hud-name"></span></div>
+            <div class="u3d-axis" aria-hidden="true"><span>Big Bang</span><span>Temps →</span><span>Aujourd'hui</span></div>
+            <div class="u3d-ctrls">
+              <button type="button" class="u3d-btn u3d-overview">Vue d'ensemble</button>
+              <button type="button" class="u3d-btn u3d-play" aria-pressed="false">▶ Lancer le voyage</button>
+            </div>
+            <p class="u3d-hint" aria-hidden="true">Glisser pour tourner</p>
           </div>
-          <p class="readout" id="cosmos-readout" aria-live="polite"></p>
+          <article class="u3d-info" aria-live="polite"></article>
         </div>
-      </div>
+        <ol class="u3d-steps" aria-label="Les 10 étapes de l'histoire de l'Univers"></ol>
+      </section>
 
       <div class="chapter-foot">
       <div class="videos">
@@ -724,6 +734,9 @@
 <script src="js/sims-life.js?v=202611050535"></script>
 <script src="js/sims-matter.js?v=202611050535"></script>
 <script src="js/frise-data.js?v=202611050535"></script>
+<script src="js/universe-data.js?v=202611151030"></script>
+<script src="js/universe-scene.js?v=202611151030"></script>
+<script src="js/universe3d.js?v=202611151030"></script>
 <script src="js/frise.js?v=202611050535"></script>
 <script src="js/main.js?v=202611050535"></script>
 <script src="js/hero3d.js?v=202611050535"></script>
