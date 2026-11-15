@@ -372,6 +372,5 @@
     return () => { ui.cine.classList.remove("is-story"); triggers.forEach((t) => t.kill()); };
   });
 
-  // images load lazily: recompute the scroll length once they have their size
-  window.addEventListener("load", () => ScrollTrigger.refresh());
+  // the refresh once images and fonts have their size is done by scroll-memory.js
 })();
